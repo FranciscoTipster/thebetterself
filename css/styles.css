@@ -262,6 +262,7 @@ h3 { font-family: var(--font-head); font-size: clamp(1.25rem, 1.8vw, 1.6rem); le
 .plan-list li.no { color: var(--soft); }
 .plan-list li.no::before { opacity: .55; -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><path d='M3 3l8 8M11 3l-8 8' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round'/></svg>"); mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><path d='M3 3l8 8M11 3l-8 8' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round'/></svg>"); }
 .plan-note { margin-top: 12px; font-size: .78rem; color: var(--soft); text-align: center; }
+.plan-list li > span { grid-column: 2; min-width: 0; }
 .plan-list li b { font-weight: 600; color: var(--fg); }
 .plan-list li.hi { color: var(--fg); }
 .plan-ideal { margin: 0 0 18px; font-size: .85rem; line-height: 1.5; color: var(--muted); border-left: 2px solid var(--rule-strong); padding-left: 12px; }
