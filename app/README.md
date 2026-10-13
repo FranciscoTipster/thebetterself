@@ -1,6 +1,8 @@
 # Área de membros — Supabase
 
-**Estado (2026-10-13): ligado.** Projeto Supabase `thebetterself` (ref `yieancdskfefxorzndzx`, organização FranciscoTipster, região Europa). Esquema aplicado, Site URL de autenticação apontado para a app publicada, convite enviado para o admin tiagosampaiocontact@gmail.com. A password da base de dados foi gerada pelo Supabase no momento da criação; se alguma vez precisares dela (só para ligações diretas ao Postgres), faz reset em Settings → Database.
+**Estado (2026-10-13): ligado e online.** Site: https://franciscotipster.github.io/thebetterself/ · Área de membros: https://franciscotipster.github.io/thebetterself/app/index.html (GitHub Pages, repositório FranciscoTipster/thebetterself; publicar = `git push`).
+
+ Projeto Supabase `thebetterself` (ref `yieancdskfefxorzndzx`, organização FranciscoTipster, região Europa). Esquema aplicado, Site URL de autenticação apontado para a app publicada, convite enviado para o admin tiagosampaiocontact@gmail.com. A password da base de dados foi gerada pelo Supabase no momento da criação; se alguma vez precisares dela (só para ligações diretas ao Postgres), faz reset em Settings → Database.
 
 Se `config.js` ficar sem chaves, a app volta ao **modo demo** (dados de exemplo só no browser).
 
@@ -23,8 +25,9 @@ Se `config.js` ficar sem chaves, a app volta ao **modo demo** (dados de exemplo 
    ```
 3. Publica os ficheiros. A app deteta a configuração e sai do modo demo.
 
-## 4. Criar membros
-- **Authentication → Users → Add user** (email + password). O perfil é criado automaticamente.
+## 4. Membros
+- Login sem password: email + código de 6 dígitos (ou Google quando ativado). Na primeira entrada a conta fica **pendente**; em Admin → Clients clicas em "Activate account".
+- Admins: tiagosampaiocontact@gmail.com e juangomezb16@gmail.com (definidos em `config.js` e em `is_admin_email` na base de dados).
 - Depois, em **Admin → Clients** na app, define o programa (Start / Evolve / Prime) e monta o plano de treino desse cliente.
 - Para a tua conta admin: cria o utilizador com o email tiagosampaiocontact@gmail.com. Fica admin automaticamente.
 
