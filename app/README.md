@@ -25,8 +25,16 @@ Se `config.js` ficar sem chaves, a app volta ao **modo demo** (dados de exemplo 
    ```
 3. Publica os ficheiros. A app deteta a configuração e sai do modo demo.
 
-## 4. Membros
-- Login sem password: email + código de 6 dígitos (ou Google quando ativado). Na primeira entrada a conta fica **pendente**; em Admin → Clients clicas em "Activate account".
+## 4. Clientes e planos (v2)
+- **Criar cliente pelo email** (Admin → Novo cliente): nome, plano adquirido. Abre logo o editor do plano. Quando a pessoa criar conta com esse email, o plano já está lá (o perfil pré-criado é "reclamado" pelo trigger `handle_new_user`).
+- Quem cria conta antes de comprar aparece no admin como **"Plano em criação"**; o cliente vê "O teu plano está a ser criado para ti." até clicarem em **Ativar plano**.
+- Estados: *Ainda não entrou* (pré-criado), *Plano em criação* (entrou, não ativado), *Ativo*.
+- Plano: um treino por dia da semana; cada exercício tem séries, reps, descanso, dicas e uma animação (biblioteca free-exercise-db, 870+ exercícios, 2 fotografias alternadas) ou um GIF/URL próprio.
+- Cliente: semana com os dias de treino, registo de kg × reps por série (pré-preenchido com a última vez), recordes, progresso, notas. Cartão "O teu coach: Juan".
+- Modo demo para testar sem tocar na base de dados: `app/index.html?demo=1` (contas em `config.js`, password `tbs-demo`).
+
+## 5. Membros
+- Login com email + password (Confirm email desligado no Supabase; sem emails). Recuperação de password por email (limite de 2 emails/hora sem SMTP próprio).
 - Admins: tiagosampaiocontact@gmail.com e juangomezb16@gmail.com (definidos em `config.js` e em `is_admin_email` na base de dados).
 - Depois, em **Admin → Clients** na app, define o programa (Start / Evolve / Prime) e monta o plano de treino desse cliente.
 - Para a tua conta admin: cria o utilizador com o email tiagosampaiocontact@gmail.com. Fica admin automaticamente.

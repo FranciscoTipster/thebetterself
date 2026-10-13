@@ -188,7 +188,8 @@
   /* ======================================================================
      ESTADO + ROUTER
      ====================================================================== */
-  const api = (CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY && window.supabase)
+  const forceDemo = /[?&]demo=1/.test(location.search);
+  const api = (!forceDemo && CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY && window.supabase)
     ? supabaseApi(window.supabase.createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON_KEY))
     : demoApi();
   const state = { user: null, cache: {} };
