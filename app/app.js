@@ -69,19 +69,16 @@
 
     return {
       mode: 'demo',
-      async requestCode(email) {
+      async signIn(email, password) {
         const acc = (CFG.DEMO_ACCOUNTS || []).find(a => a.email.toLowerCase() === String(email).toLowerCase());
-        if (!acc) throw new Error('Demo mode: use one of the demo emails.');
-      },
-      async verifyCode(email, token) {
-        const acc = (CFG.DEMO_ACCOUNTS || []).find(a => a.email.toLowerCase() === String(email).toLowerCase());
-        if (!acc) throw new Error('Demo mode: use one of the demo emails.');
-        if (String(token).trim() !== '000000') throw new Error('Demo code is 000000.');
+        if (!acc || acc.password !== password) throw new Error('Demo mode: wrong email or password.');
         const p = db.profiles.find(x => x.email.toLowerCase() === acc.email.toLowerCase());
         sessionStorage.setItem(SKEY, p.id);
         db.logins.unshift({ id: uid(), user_id: p.id, at: new Date().toISOString(), user_agent: navigator.userAgent.slice(0, 80) }); persist();
         return wait(p);
       },
+      async signUp() { throw new Error('Demo mode: use one of the demo accounts.'); },
+      async resetPassword() { throw new Error('Demo mode: password is tbs-demo.'); },
       async signOut() { sessionStorage.removeItem(SKEY); },
       async getUser() { return me(); },
       async listProfiles() { return wait(db.profiles.map(p => ({ ...p }))); },
@@ -113,24 +110,37 @@
     const profileOf = async id => { const { data, error } = await sb.from('profiles').select('*').eq('id', id).single(); if (error) throw error; return data; };
     const shapeWorkout = w => ({ ...w, exercises: (w.workout_exercises || []).slice().sort(by('sort')) });
     const shapeSession = s => ({ ...s, sets: (s.session_sets || []).slice().sort((a, b) => a.set_no - b.set_no) });
+    const finish = async userId => {
+      let p = null;
+      for (let i = 0; i < 6 && !p; i++) { try { p = await profileOf(userId); } catch (e) { await new Promise(r => setTimeout(r, 400)); } }
+      if (!p) throw new Error('Your profile is not ready yet. Try again in a moment.');
+      await sb.from('logins').insert({ user_id: p.id, user_agent: navigator.userAgent.slice(0, 120) });
+      return p;
+    };
     return {
       mode: 'supabase',
-      async requestCode(email) {
-        const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true, emailRedirectTo: location.href.split('#')[0] } });
+      async signIn(email, password) {
+        const { data, error } = await sb.auth.signInWithPassword({ email, password });
+        if (error) throw new Error(/invalid login/i.test(error.message) ? 'Wrong email or password.' : error.message);
+        return finish(data.user.id);
+      },
+      async signUp(email, password, fullName) {
+        const { data, error } = await sb.auth.signUp({ email, password, options: { data: { full_name: fullName } } });
+        if (error) throw new Error(/already registered/i.test(error.message) ? 'This email already has an account. Log in instead.' : error.message);
+        if (!data.session) throw new Error('Account created. Check your email to confirm it, then log in.');
+        return finish(data.user.id);
+      },
+      async resetPassword(email) {
+        const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.href.split('#')[0] + '#/password' });
+        if (error) throw new Error(error.message);
+      },
+      async updatePassword(password) {
+        const { error } = await sb.auth.updateUser({ password });
         if (error) throw new Error(error.message);
       },
       async signInWithGoogle() {
         const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.href.split('#')[0] } });
         if (error) throw new Error(error.message);
-      },
-      async verifyCode(email, token) {
-        const { data, error } = await sb.auth.verifyOtp({ email, token, type: 'email' });
-        if (error) throw new Error(/expired|invalid/i.test(error.message) ? 'That code is not valid or has expired. Request a new one.' : error.message);
-        let p = null;
-        for (let i = 0; i < 5 && !p; i++) { try { p = await profileOf(data.user.id); } catch (e) { await new Promise(r => setTimeout(r, 400)); } }
-        if (!p) throw new Error('Your profile is not ready yet. Try again in a moment.');
-        await sb.from('logins').insert({ user_id: p.id, user_agent: navigator.userAgent.slice(0, 120) });
-        return p;
       },
       async signOut() { await sb.auth.signOut(); },
       async recordLogin() { const { data } = await sb.auth.getSession(); if (data.session) await sb.from('logins').insert({ user_id: data.session.user.id, user_agent: navigator.userAgent.slice(0, 120) }); },
@@ -286,7 +296,9 @@
      ====================================================================== */
   function viewLogin(err = '') {
     const demo = api.mode === 'demo';
-    const st = state.login || { step: 'email', email: '' };
+    const st = state.login || { mode: 'login', email: '', msg: '' };
+    const isSignup = st.mode === 'signup', isReset = st.mode === 'reset';
+    const googleBtn = CFG.GOOGLE_LOGIN && !demo ? `<button type="button" class="btn btn-line btn-block" id="google"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.6 30.2 0 24 0 14.6 0 6.5 5.4 2.5 13.3l7.8 6.1C12.2 13.6 17.6 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9c4.4-4.1 7-10.1 7-17.6z"/><path fill="#FBBC05" d="M10.3 28.6A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.6l-7.8-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.5 10.7l7.8-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.4 0-11.8-4.1-13.7-9.9l-7.8 6.1C6.5 42.6 14.6 48 24 48z"/></svg>Continue with Google</button><div class="label" style="text-align:center">or</div>` : '';
     root.innerHTML = `
       <div class="login">
         <div class="login-side">
@@ -299,54 +311,81 @@
         </div>
         <div class="login-form">
           <form class="form" id="loginForm" novalidate>
-            ${st.step === 'email' ? `
-            <div><p class="label" style="margin-bottom:10px">VIP Zone</p><h2 class="h2" style="font-size:1.8rem">Sign in or create your account.</h2><p class="muted small" style="margin-top:10px">No passwords. Use Google, or we email you a sign-in link.</p></div>
-            ${CFG.GOOGLE_LOGIN && !demo ? `<button type="button" class="btn btn-line btn-block" id="google"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.6 30.2 0 24 0 14.6 0 6.5 5.4 2.5 13.3l7.8 6.1C12.2 13.6 17.6 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9c4.4-4.1 7-10.1 7-17.6z"/><path fill="#FBBC05" d="M10.3 28.6A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.6l-7.8-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.5 10.7l7.8-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.4 0-11.8-4.1-13.7-9.9l-7.8 6.1C6.5 42.6 14.6 48 24 48z"/></svg>Continue with Google</button><div class="label" style="text-align:center">or</div>` : ''}
+            <div class="login-tabs" role="tablist">
+              <button type="button" class="login-tab ${!isSignup && !isReset ? 'is-on' : ''}" data-mode="login">Log in</button>
+              <button type="button" class="login-tab ${isSignup ? 'is-on' : ''}" data-mode="signup">Create account</button>
+            </div>
+            ${isReset
+              ? `<div><p class="label" style="margin-bottom:10px">Password</p><h2 class="h2" style="font-size:1.8rem">Reset your password.</h2><p class="muted small" style="margin-top:10px">We email you a link to choose a new password.</p></div>`
+              : isSignup
+                ? `<div><p class="label" style="margin-bottom:10px">VIP Zone</p><h2 class="h2" style="font-size:1.8rem">Create your account.</h2><p class="muted small" style="margin-top:10px">Takes 20 seconds. Your coach activates it after your application.</p></div>`
+                : `<div><p class="label" style="margin-bottom:10px">VIP Zone</p><h2 class="h2" style="font-size:1.8rem">Welcome back.</h2></div>`}
+            ${isReset ? '' : googleBtn}
+            ${isSignup ? `<div class="field"><label for="name">Name</label><input id="name" name="name" type="text" autocomplete="name" required /></div>` : ''}
             <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" inputmode="email" value="${esc(st.email)}" required /></div>
+            ${isReset ? '' : `<div class="field"><label for="password">Password${isSignup ? ' <span class="muted">(min. 6 characters)</span>' : ''}</label><input id="password" name="password" type="password" autocomplete="${isSignup ? 'new-password' : 'current-password'}" minlength="6" required /></div>`}
             <p class="form-error" id="loginErr" ${err ? '' : 'hidden'}>${esc(err)}</p>
-            <button class="btn btn-fill btn-block" type="submit">Send me a sign-in link</button>
-            ${demo ? `<div class="demo-hint"><strong>Demo mode</strong> (no database connected). Use <code>${esc(CFG.DEMO_ACCOUNTS[0].email)}</code> (admin) or <code>${esc(CFG.DEMO_ACCOUNTS[2].email)}</code> (member). Code: <code>000000</code>.</div>` : ''}
-            ` : `
-            <div><p class="label" style="margin-bottom:10px">Check your email</p><h2 class="h2" style="font-size:1.8rem">Open the email and tap <em>Sign in</em>.</h2><p class="muted small" style="margin-top:10px">We sent a sign-in link to <strong>${esc(st.email)}</strong>. It is valid for a few minutes and brings you straight back here. If your email shows a 6-digit code instead, type it below.</p></div>
-            <div class="field"><label for="code">Code (only if the email has one)</label><input id="code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="6" placeholder="000000" style="font-family:var(--font-head);font-size:1.6rem;letter-spacing:.3em" /></div>
-            <p class="form-error" id="loginErr" ${err ? '' : 'hidden'}>${esc(err)}</p>
-            <button class="btn btn-fill btn-block" type="submit">Enter with code</button>
-            <button type="button" class="small muted" id="restart" style="justify-self:start;text-decoration:underline">Use a different email or resend the link</button>
-            `}
+            <p class="small" id="loginMsg" ${st.msg ? '' : 'hidden'}>${esc(st.msg)}</p>
+            <button class="btn btn-fill btn-block" type="submit">${isReset ? 'Send reset link' : isSignup ? 'Create my account' : 'Log in'}</button>
+            ${isReset
+              ? `<button type="button" class="small muted" data-mode="login" style="justify-self:start;text-decoration:underline">← Back to log in</button>`
+              : isSignup ? '' : `<button type="button" class="small muted" data-mode="reset" style="justify-self:start;text-decoration:underline">Forgot your password?</button>`}
+            ${demo ? `<div class="demo-hint"><strong>Demo mode</strong> (no database connected). Use <code>${esc(CFG.DEMO_ACCOUNTS[0].email)}</code> (admin) or <code>${esc(CFG.DEMO_ACCOUNTS[2].email)}</code> (member). Password: <code>tbs-demo</code>.</div>` : ''}
             <a href="../" class="small muted">← Back to the site</a>
           </form>
         </div>
       </div>`;
     const form = root.querySelector('#loginForm');
+    root.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => { state.login = { mode: b.dataset.mode, email: form.email.value.trim(), msg: '' }; viewLogin(); }));
     const g = root.querySelector('#google');
     if (g) g.addEventListener('click', async () => { try { await api.signInWithGoogle(); } catch (err) { const el = root.querySelector('#loginErr'); el.textContent = err.message; el.hidden = false; } });
-    const restart = root.querySelector('#restart');
-    if (restart) restart.addEventListener('click', () => { state.login = { step: 'email', email: st.email }; viewLogin(); });
-    const codeInput = root.querySelector('#code'); if (codeInput) codeInput.focus();
+    (root.querySelector('#name') || root.querySelector('#email')).focus();
     form.addEventListener('submit', async e => {
       e.preventDefault();
-      const btn = form.querySelector('button[type=submit]'); const el = root.querySelector('#loginErr');
-      btn.disabled = true;
+      const btn = form.querySelector('button[type=submit]'); const el = root.querySelector('#loginErr'); const label = btn.textContent;
+      const email = form.email.value.trim().toLowerCase();
+      btn.disabled = true; el.hidden = true;
       try {
-        if (st.step === 'email') {
-          const email = form.email.value.trim().toLowerCase();
-          if (!email) throw new Error('Type your email.');
+        if (!email) throw new Error('Type your email.');
+        if (isReset) {
           btn.textContent = 'Sending…';
-          await api.requestCode(email);
-          state.login = { step: 'code', email };
-          viewLogin();
-        } else {
-          const token = form.code.value.trim();
-          if (!token) throw new Error('Open the sign-in link in your email, or type the code if you received one.');
-          btn.textContent = 'Checking…';
-          state.user = await api.verifyCode(st.email, token);
-          state.login = null; state.cache = {};
-          go(isAdmin() ? '/admin' : '/home');
+          await api.resetPassword(email);
+          state.login = { mode: 'login', email, msg: 'Reset link sent. Check your email.' };
+          viewLogin(); return;
         }
+        const password = form.password.value;
+        if (password.length < 6) throw new Error('Password needs at least 6 characters.');
+        btn.textContent = isSignup ? 'Creating…' : 'Entering…';
+        state.user = isSignup ? await api.signUp(email, password, form.name.value.trim()) : await api.signIn(email, password);
+        state.login = null; state.cache = {};
+        go(isAdmin() ? '/admin' : '/home');
       } catch (err) {
         el.textContent = err.message || 'Could not sign in.'; el.hidden = false;
-        btn.disabled = false; btn.textContent = st.step === 'email' ? 'Send me a sign-in link' : 'Enter with code';
+        btn.disabled = false; btn.textContent = label;
       }
+    });
+  }
+
+  function viewPassword() {
+    root.innerHTML = `
+      <div class="boot" style="gap:18px;padding:24px;text-align:center">
+        <span class="wordmark">THE<b>BETTER</b>SELF</span>
+        <h1 class="h1" style="font-size:2rem">Choose a <em>new password.</em></h1>
+        <form class="form" id="pwForm" novalidate style="width:min(100%,380px);text-align:left">
+          <div class="field"><label for="pw">New password</label><input id="pw" name="pw" type="password" autocomplete="new-password" minlength="6" required /></div>
+          <p class="form-error" id="pwErr" hidden></p>
+          <button class="btn btn-fill btn-block" type="submit">Save password</button>
+        </form>
+      </div>`;
+    const f = root.querySelector('#pwForm');
+    f.addEventListener('submit', async e => {
+      e.preventDefault(); const el = root.querySelector('#pwErr');
+      try {
+        if (f.pw.value.length < 6) throw new Error('Password needs at least 6 characters.');
+        await api.updatePassword(f.pw.value);
+        state.user = await api.getUser(); state.cache = {};
+        go(isAdmin() ? '/admin' : '/home');
+      } catch (err) { el.textContent = err.message; el.hidden = false; }
     });
   }
 
@@ -707,6 +746,7 @@
     const { path, params } = route();
     try {
       if (!state.user) { if (path !== 'login') { go('/login'); return; } viewLogin(); return; }
+      if (path === 'password') { viewPassword(); return; }
       if (!isAdmin() && state.user.approved === false) { viewPending(); return; }
       if (path === 'login') { go(isAdmin() ? '/admin' : '/home'); return; }
       if (path.startsWith('admin') && !isAdmin()) { go('/home'); return; }
@@ -732,7 +772,7 @@
   (async function boot() {
     if (api.mode === 'supabase' && /access_token=|code=/.test(location.href)) { await new Promise(r => setTimeout(r, 800)); }
     state.user = await api.getUser();
-    if (state.user && api.mode === 'supabase' && /access_token=|code=/.test(location.href)) { try { await api.recordLogin(); } catch (e) {} history.replaceState(null, '', location.pathname + '#/home'); }
+    if (state.user && api.mode === 'supabase' && /access_token=|code=/.test(location.href)) { try { await api.recordLogin(); } catch (e) {} history.replaceState(null, '', location.pathname + (/type=recovery/.test(location.href) ? '#/password' : '#/home')); }
     if (!location.hash) go(state.user ? (isAdmin() ? '/admin' : '/home') : '/login');
     render();
   })();
