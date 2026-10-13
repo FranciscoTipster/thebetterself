@@ -353,7 +353,7 @@
       s.style.transitionDelay = `${i * 40}ms`;
       wrap.appendChild(s);
     }
-    text.textContent = spotsLeft === 0 ? 'All spots taken.' : `${spotsLeft} of ${total} spots available.`;
+    text.textContent = spotsLeft === 0 ? 'Todas as vagas preenchidas.' : `${spotsLeft} de ${total} vagas disponíveis.`;
   })();
 
   /* ----------------------------------------------------------------------

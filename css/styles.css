@@ -262,18 +262,24 @@ h3 { font-family: var(--font-head); font-size: clamp(1.25rem, 1.8vw, 1.6rem); le
 .plan-list li.no { color: var(--soft); }
 .plan-list li.no::before { opacity: .55; -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><path d='M3 3l8 8M11 3l-8 8' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round'/></svg>"); mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><path d='M3 3l8 8M11 3l-8 8' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round'/></svg>"); }
 .plan-note { margin-top: 12px; font-size: .78rem; color: var(--soft); text-align: center; }
+.plan-list li b { font-weight: 600; color: var(--fg); }
+.plan-list li.hi { color: var(--fg); }
+.plan-ideal { margin: 0 0 18px; font-size: .85rem; line-height: 1.5; color: var(--muted); border-left: 2px solid var(--rule-strong); padding-left: 12px; }
 .plan-start .plan-price, .plan-start .plan-list li.yes { color: var(--muted); }
 /* Evolve: black, lifted */
 .plan-featured { --bg: #0a0a0a; --fg: #f3f1ec; --muted: #b5b1a8; --soft: #86827a; --rule: rgba(243,241,236,.14); --rule-strong: rgba(243,241,236,.45); background: var(--bg); color: var(--fg); border-color: var(--bg); margin: -24px -1px; padding-top: clamp(40px, 3.8vw, 60px); padding-bottom: clamp(32px, 3.2vw, 48px); z-index: 2; box-shadow: 0 40px 100px rgba(10,10,10,.28); }
 .plan-featured::before { background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), rgba(243,241,236,.08), transparent 55%); }
 .plan-featured .plan-price { font-size: clamp(3.2rem, 4.6vw, 4.8rem); }
 .plan-featured .plan-list li.yes { font-weight: 500; }
+.plan-featured .plan-list li.hi b { color: var(--gold); }
 /* Prime: white card, gold accents */
 .plan-prime { background: #fff; border-color: rgba(184,169,140,.6); box-shadow: inset 0 2px 0 var(--gold); }
 .plan-prime::before { background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), rgba(184,169,140,.14), transparent 55%); }
 .plan-flag-prime { background: var(--gold); color: #0a0a0a; }
 .plan-prime .plan-day { color: #8a7a58; }
 .plan-prime .plan-list li.yes::before { background-color: #8a7a58; }
+.plan-prime .plan-list li.hi b { color: #8a7a58; }
+.plan-prime .plan-list li.hi { font-weight: 500; }
 .plan-prime .btn-fill { background: #0a0a0a; color: #f3f1ec; border-color: #0a0a0a; }
 .plan-prime .btn-fill::after { background: var(--gold); }
 .plan-prime .btn-fill:hover { color: #0a0a0a; }

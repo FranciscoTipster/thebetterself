@@ -12,12 +12,12 @@ window.TBS_CONFIG = {
   GOOGLE_LOGIN: false,
 
   // Emails that get the admin role automatically (also enforced in supabase/schema.sql).
-  ADMIN_EMAILS: ['tiagosampaiocontact@gmail.com'],
+  ADMIN_EMAILS: ['tiagosampaiocontact@gmail.com', 'juangomezb16@gmail.com'],
 
   // Demo accounts (demo mode only; nothing leaves the browser).
   DEMO_ACCOUNTS: [
     { email: 'tiagosampaiocontact@gmail.com', password: 'tbs-demo', full_name: 'Tiago Sampaio', role: 'admin', program: 'PRIME' },
-    { email: 'juan@thebetterself.com', password: 'tbs-demo', full_name: 'Juan', role: 'admin', program: 'PRIME' },
+    { email: 'juangomezb16@gmail.com', password: 'tbs-demo', full_name: 'Juan', role: 'admin', program: 'PRIME' },
     { email: 'member@example.com', password: 'tbs-demo', full_name: 'Demo Member', role: 'member', program: 'EVOLVE' }
   ],
 

@@ -6,7 +6,7 @@
 -- Admin emails: add more addresses to this list if needed.
 create or replace function public.is_admin_email(e text) returns boolean
 language sql immutable as $$
-  select lower(e) in ('tiagosampaiocontact@gmail.com');
+  select lower(e) in ('tiagosampaiocontact@gmail.com', 'juangomezb16@gmail.com');
 $$;
 
 -- ---------------------------------------------------------------- profiles
