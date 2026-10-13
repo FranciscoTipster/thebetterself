@@ -139,6 +139,7 @@ h3 { font-family: var(--font-head); font-size: clamp(1.25rem, 1.8vw, 1.6rem); le
 .btn-sm { height: 42px; padding: 0 22px; font-size: .66rem; }
 .btn-lg { height: 66px; padding: 0 44px; }
 .btn-block { width: 100%; }
+.plan .btn-block { padding-left: 14px; padding-right: 14px; letter-spacing: .13em; }
 .btn[disabled] { opacity: .5; pointer-events: none; }
 
 /* ------------------------------------------------------------ nav */

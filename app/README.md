@@ -1,6 +1,6 @@
 # Área de membros — Supabase
 
-**Estado (2026-10-13): ligado e online.** Site: https://franciscotipster.github.io/thebetterself/ · Área de membros: https://franciscotipster.github.io/thebetterself/app/index.html (GitHub Pages, repositório FranciscoTipster/thebetterself; publicar = `git push`).
+**Estado (2026-10-13): ligado e online.** Site: https://thebetterself.vercel.app/ · Área de membros: https://thebetterself.vercel.app/app/index.html (Vercel, projeto thebetterself ligado ao repositório GitHub; publicar = `git push`).
 
  Projeto Supabase `thebetterself` (ref `yieancdskfefxorzndzx`, organização FranciscoTipster, região Europa). Esquema aplicado, Site URL de autenticação apontado para a app publicada, convite enviado para o admin tiagosampaiocontact@gmail.com. A password da base de dados foi gerada pelo Supabase no momento da criação; se alguma vez precisares dela (só para ligações diretas ao Postgres), faz reset em Settings → Database.
 

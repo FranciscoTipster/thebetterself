@@ -116,7 +116,7 @@
     return {
       mode: 'supabase',
       async requestCode(email) {
-        const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
+        const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true, emailRedirectTo: location.href.split('#')[0] } });
         if (error) throw new Error(error.message);
       },
       async signInWithGoogle() {
@@ -300,18 +300,18 @@
         <div class="login-form">
           <form class="form" id="loginForm" novalidate>
             ${st.step === 'email' ? `
-            <div><p class="label" style="margin-bottom:10px">VIP Zone</p><h2 class="h2" style="font-size:1.8rem">Sign in or create your account.</h2><p class="muted small" style="margin-top:10px">No passwords. Use Google, or we email you a 6-digit code.</p></div>
+            <div><p class="label" style="margin-bottom:10px">VIP Zone</p><h2 class="h2" style="font-size:1.8rem">Sign in or create your account.</h2><p class="muted small" style="margin-top:10px">No passwords. Use Google, or we email you a sign-in link.</p></div>
             ${CFG.GOOGLE_LOGIN && !demo ? `<button type="button" class="btn btn-line btn-block" id="google"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.6 30.2 0 24 0 14.6 0 6.5 5.4 2.5 13.3l7.8 6.1C12.2 13.6 17.6 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9c4.4-4.1 7-10.1 7-17.6z"/><path fill="#FBBC05" d="M10.3 28.6A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.6l-7.8-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.5 10.7l7.8-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.4 0-11.8-4.1-13.7-9.9l-7.8 6.1C6.5 42.6 14.6 48 24 48z"/></svg>Continue with Google</button><div class="label" style="text-align:center">or</div>` : ''}
             <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" inputmode="email" value="${esc(st.email)}" required /></div>
             <p class="form-error" id="loginErr" ${err ? '' : 'hidden'}>${esc(err)}</p>
-            <button class="btn btn-fill btn-block" type="submit">Send me a code</button>
+            <button class="btn btn-fill btn-block" type="submit">Send me a sign-in link</button>
             ${demo ? `<div class="demo-hint"><strong>Demo mode</strong> (no database connected). Use <code>${esc(CFG.DEMO_ACCOUNTS[0].email)}</code> (admin) or <code>${esc(CFG.DEMO_ACCOUNTS[2].email)}</code> (member). Code: <code>000000</code>.</div>` : ''}
             ` : `
-            <div><p class="label" style="margin-bottom:10px">Check your email</p><h2 class="h2" style="font-size:1.8rem">Enter the code.</h2><p class="muted small" style="margin-top:10px">We sent a 6-digit code to <strong>${esc(st.email)}</strong>. It is valid for a few minutes.</p></div>
-            <div class="field"><label for="code">Code</label><input id="code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="6" placeholder="000000" required style="font-family:var(--font-head);font-size:1.6rem;letter-spacing:.3em" /></div>
+            <div><p class="label" style="margin-bottom:10px">Check your email</p><h2 class="h2" style="font-size:1.8rem">Open the email and tap <em>Sign in</em>.</h2><p class="muted small" style="margin-top:10px">We sent a sign-in link to <strong>${esc(st.email)}</strong>. It is valid for a few minutes and brings you straight back here. If your email shows a 6-digit code instead, type it below.</p></div>
+            <div class="field"><label for="code">Code (only if the email has one)</label><input id="code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="6" placeholder="000000" style="font-family:var(--font-head);font-size:1.6rem;letter-spacing:.3em" /></div>
             <p class="form-error" id="loginErr" ${err ? '' : 'hidden'}>${esc(err)}</p>
-            <button class="btn btn-fill btn-block" type="submit">Enter</button>
-            <button type="button" class="small muted" id="restart" style="justify-self:start;text-decoration:underline">Use a different email or resend the code</button>
+            <button class="btn btn-fill btn-block" type="submit">Enter with code</button>
+            <button type="button" class="small muted" id="restart" style="justify-self:start;text-decoration:underline">Use a different email or resend the link</button>
             `}
             <a href="../" class="small muted">← Back to the site</a>
           </form>
@@ -336,14 +336,16 @@
           state.login = { step: 'code', email };
           viewLogin();
         } else {
+          const token = form.code.value.trim();
+          if (!token) throw new Error('Open the sign-in link in your email, or type the code if you received one.');
           btn.textContent = 'Checking…';
-          state.user = await api.verifyCode(st.email, form.code.value.trim());
+          state.user = await api.verifyCode(st.email, token);
           state.login = null; state.cache = {};
           go(isAdmin() ? '/admin' : '/home');
         }
       } catch (err) {
         el.textContent = err.message || 'Could not sign in.'; el.hidden = false;
-        btn.disabled = false; btn.textContent = st.step === 'email' ? 'Send me a code' : 'Enter';
+        btn.disabled = false; btn.textContent = st.step === 'email' ? 'Send me a sign-in link' : 'Enter with code';
       }
     });
   }
