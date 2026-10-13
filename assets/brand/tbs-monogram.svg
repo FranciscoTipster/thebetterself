@@ -1,0 +1,6 @@
+<!-- TBS monogram. Square, monochrome. Use on black (this file) or invert the two fills for light backgrounds. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <rect width="200" height="200" fill="#0a0a0a"/>
+  <rect x="18.5" y="18.5" width="163" height="163" fill="none" stroke="#3a3a3a" stroke-width="1.5"/>
+  <text x="100" y="121" text-anchor="middle" font-family="Inter Tight, Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-weight="700" font-size="62" letter-spacing="4" fill="#f5f3ee">TBS</text>
+</svg>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THEBETTERSELF — Online Personal Training & Coaching</title>
+  <meta name="description" content="Personalized online fitness coaching designed to help you build a stronger body, better habits and a more disciplined lifestyle." />
+  <meta name="theme-color" content="#f3f1ec" />
+  <!-- EDITABLE: set the canonical URL once the domain is live -->
+  <link rel="canonical" href="https://thebetterself.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="THEBETTERSELF" />
+  <meta property="og:title" content="THEBETTERSELF — Online Personal Training & Coaching" />
+  <meta property="og:description" content="Personalized online fitness coaching designed to help you build a stronger body, better habits and a more disciplined lifestyle." />
+  <meta property="og:image" content="assets/img/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="assets/brand/favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="assets/img/juan-hero.jpg" imagesrcset="assets/img/juan-hero-800.webp 800w, assets/img/juan-hero-1200.webp 1200w, assets/img/juan-hero-1600.webp 1600w" imagesizes="(max-width: 900px) 100vw, 46vw" />
+  <link rel="stylesheet" href="css/styles.css?v=19" />
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Organization","name":"THEBETTERSELF","alternateName":"TBS","url":"https://thebetterself.com/","logo":"https://thebetterself.com/assets/brand/tbs-monogram-512.png","description":"Personalized online fitness coaching designed to help you build a stronger body, better habits and a more disciplined lifestyle.","founder":{"@type":"Person","name":"Juan"}}
+  </script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- Intro -->
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader-mark"><span>T</span><span>H</span><span>E</span><b><span>B</span><span>E</span><span>T</span><span>T</span><span>E</span><span>R</span></b><span>S</span><span>E</span><span>L</span><span>F</span></div>
+  <div class="loader-line"><i></i></div>
+</div>
+
+<!-- Fixed gym scenes: the page scrolls over them -->
+<div class="scenes" aria-hidden="true">
+  <figure class="scene" data-scene="plate"><video muted loop playsinline preload="metadata" poster="assets/img/stock/plate-1600.webp" src="assets/video/method.mp4"></video></figure>
+  <figure class="scene" data-scene="runner"><video muted loop playsinline preload="metadata" poster="assets/img/stock/runner-1600.webp" src="assets/video/discipline.mp4"></video></figure>
+  <figure class="scene" data-scene="floor"><video muted loop playsinline preload="metadata" poster="assets/img/stock/floor-barbell-1600.webp" src="assets/video/apply.mp4"></video></figure>
+</div>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ============================================================ NAV -->
+<header class="nav" id="nav" data-theme="light">
+  <div class="container nav-inner">
+    <a href="#top" class="nav-logo" aria-label="THEBETTERSELF — home">
+      <span class="wordmark">THE<b>BETTER</b>SELF</span>
+      <span class="monogram" aria-hidden="true">TBS</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#results">Results</a>
+      <a href="#coaching">Coaching</a>
+      <a href="#juan">Juan</a>
+      <a href="#members">VIP Zone</a>
+    </nav>
+    <div class="nav-right">
+      <a href="app/index.html" class="btn btn-line btn-sm nav-login"><span data-text="Login / Sign up">Login / Sign up</span></a>
+      <a href="#apply" class="btn btn-fill btn-sm" data-magnetic><span data-text="Apply">Apply</span></a>
+      <button class="nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <nav class="mobile-menu-links" aria-label="Mobile">
+    <a href="#results"><span>01</span>Results</a>
+    <a href="#coaching"><span>02</span>Coaching</a>
+    <a href="#juan"><span>03</span>Juan</a>
+    <a href="#apply"><span>04</span>Apply</a>
+    <a href="app/index.html"><span>05</span>Login · VIP Zone</a>
+  </nav>
+  <div class="mobile-menu-foot">
+    <a href="app/index.html" class="btn btn-line btn-block"><span data-text="Login">Login</span></a>
+    <a href="#apply" class="btn btn-fill btn-block"><span data-text="Apply for coaching">Apply for coaching</span></a>
+  </div>
+</div>
+
+<main id="main">
+
+<!-- ============================================================ 1. HERO (light panel) -->
+<section class="panel hero light" id="top">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <p class="label reveal">Online coaching · 1-on-1 · Remote</p>
+      <h1 class="display" data-split>Build the body.<br />Become the <em>better self.</em></h1>
+      <p class="hero-sub reveal" style="--d: .5s">A personalized plan, real guidance, and someone expecting you to show up.</p>
+      <div class="hero-actions reveal" style="--d: .65s">
+        <a href="#apply" class="btn btn-fill btn-lg" data-magnetic><span data-text="Apply for coaching">Apply for coaching</span></a>
+        <a href="#results" class="btn btn-text"><span data-text="See 30 days of work">See 30 days of work</span><i></i></a>
+      </div>
+      <ul class="trust reveal" style="--d: .9s">
+        <li>Coach Juan, 1-on-1</li>
+        <li><span id="heroSpots">15</span> of 15 founding spots left</li>
+        <li>No commitment until we talk</li>
+      </ul>
+    </div>
+    <div class="hero-media" data-img-reveal>
+      <div class="parallax" data-parallax="0.08" data-pointer="14">
+        <picture>
+          <source type="image/webp" srcset="assets/img/juan-hero-800.webp 800w, assets/img/juan-hero-1200.webp 1200w, assets/img/juan-hero-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 46vw" />
+          <img src="assets/img/juan-hero.jpg" alt="Coach Juan, arms crossed" width="1200" height="1600" fetchpriority="high" decoding="async" />
+        </picture>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 2. WINDOW: the gym shows through -->
+<section class="window dark" data-scene="plate" aria-label="No shortcuts">
+  <div class="container window-inner">
+    <p class="label reveal">The method</p>
+    <h2 class="display" data-split>No shortcuts. Just a <em>better system.</em></h2>
+    <p class="window-sub reveal" style="--d: .3s">Structure. Discipline. Accountability. Progress.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 3. RESULTS (light panel) -->
+<section class="panel results light" id="results">
+  <div class="container results-grid">
+    <div class="results-copy">
+      <p class="label reveal">Real progress</p>
+      <div class="cal reveal" id="cal" aria-label="30 days">
+        <div class="cal-card">
+          <span class="cal-top">Day</span>
+          <span class="cal-num" id="calNum">1</span>
+        </div>
+        <div class="cal-grid" id="calGrid" aria-hidden="true"></div>
+        <div class="cal-leaves" id="calLeaves" aria-hidden="true"></div>
+      </div>
+      <h2 class="h2" data-split>Hundreds of small decisions, <em>repeated.</em></h2>
+      <p class="fineprint reveal">Real photographs, 30 days apart. Results depend on effort, consistency and individual circumstances.</p>
+      <a href="#coaching" class="btn btn-fill reveal" data-magnetic><span data-text="See the programs">See the programs</span></a>
+    </div>
+    <figure class="ba reveal" style="--d: .15s">
+      <div class="ba-frame" data-ba style="--pos: 50%">
+        <picture class="ba-after">
+          <source type="image/webp" srcset="assets/img/transformations/tf-01-after.webp" />
+          <img src="assets/img/transformations/tf-01-after.jpg" alt="After 30 days of coaching" width="1000" height="1250" loading="lazy" decoding="async" draggable="false" />
+        </picture>
+        <picture class="ba-before">
+          <source type="image/webp" srcset="assets/img/transformations/tf-01-before.webp" />
+          <img src="assets/img/transformations/tf-01-before.jpg" alt="Before coaching" width="1000" height="1250" loading="lazy" decoding="async" draggable="false" />
+        </picture>
+        <span class="ba-tag ba-tag-before">Before</span>
+        <span class="ba-tag ba-tag-after">After</span>
+        <div class="ba-handle" aria-hidden="true"><span></span></div>
+        <input type="range" class="ba-range" min="0" max="100" value="50" step="0.1" aria-label="Compare before and after, 30 days" />
+      </div>
+      <figcaption class="ba-caption"><span class="label">Drag to compare</span><span class="label">30 days</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 4. WINDOW -->
+<section class="window dark" data-scene="runner" aria-label="Discipline beats motivation">
+  <div class="container window-inner">
+    <p class="label reveal">Every single day</p>
+    <h2 class="display" data-split>Discipline beats <em>motivation.</em></h2>
+    <p class="window-sub reveal" style="--d: .3s">Motivation shows up when it wants to. Discipline shows up anyway.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 5. COACHING (light panel) -->
+<section class="panel pricing light" id="coaching">
+  <div class="container">
+    <div class="section-head split">
+      <div>
+        <p class="label reveal">Coaching</p>
+        <h2 class="h2" data-split>Choose your level of <em>commitment.</em></h2>
+      </div>
+      <div class="founding reveal" style="--d: .2s">
+        <p class="label">The first 15</p>
+        <p class="founding-text">Founding prices for the first 15 clients. <span id="foundingText"></span></p>
+        <div class="founding-segments" id="foundingSegments" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <div class="plans">
+      <article class="plan plan-start reveal" data-spot>
+        <header class="plan-head">
+          <span class="plan-flag plan-flag-quiet">Foundation</span>
+          <h3 class="plan-name">Start</h3>
+          <p class="plan-price">€59<span class="dec">.90</span><span class="per">/ month</span></p>
+          <p class="plan-meta"><span class="plan-was">€79.90</span><span class="plan-day">≈ €2 a day</span></p>
+          <p class="plan-for">Your plan and weekly accountability.</p>
+        </header>
+        <ul class="plan-list">
+          <li class="yes">Personalized training plan</li>
+          <li class="yes">Weekly check-in &amp; adjustments</li>
+          <li class="yes">Support through messages</li>
+          <li class="no">Nutrition guidance</li>
+          <li class="no">Habit coaching</li>
+          <li class="no">Video calls with Juan</li>
+          <li class="no">Feedback on your exercise videos</li>
+          <li class="no">Daily accountability</li>
+        </ul>
+        <a href="#apply" class="btn btn-line btn-block" data-program="START"><span data-text="Start with the basics">Start with the basics</span></a>
+      </article>
+
+      <article class="plan plan-featured reveal" style="--d: .1s" data-spot>
+        <header class="plan-head">
+          <span class="plan-flag">Most popular</span>
+          <h3 class="plan-name">Evolve</h3>
+          <p class="plan-price">€99<span class="dec">.90</span><span class="per">/ month</span></p>
+          <p class="plan-meta"><span class="plan-was">€129.90</span><span class="plan-day">≈ €3.33 a day</span></p>
+          <p class="plan-for">Training, nutrition, habits, calls. The full system.</p>
+        </header>
+        <ul class="plan-list">
+          <li class="yes">Personalized training plan</li>
+          <li class="yes">Weekly check-in &amp; frequent adjustments</li>
+          <li class="yes">Personalized support through messages</li>
+          <li class="yes">Nutrition guidance</li>
+          <li class="yes">Weekly habit coaching</li>
+          <li class="yes">2 video calls with Juan per month</li>
+          <li class="yes">Feedback on your exercise videos</li>
+          <li class="no">Daily accountability</li>
+        </ul>
+        <a href="#apply" class="btn btn-fill btn-block" data-program="EVOLVE"><span data-text="Choose Evolve">Choose Evolve</span></a>
+        <p class="plan-note">The plan most clients choose.</p>
+      </article>
+
+      <article class="plan plan-prime reveal" style="--d: .2s" data-spot>
+        <header class="plan-head">
+          <span class="plan-flag plan-flag-prime">Premium · Limited spots</span>
+          <h3 class="plan-name">Prime</h3>
+          <p class="plan-price">€199<span class="dec">.90</span><span class="per">/ month</span></p>
+          <p class="plan-meta"><span class="plan-was">€249.90</span><span class="plan-day">≈ €6.66 a day</span></p>
+          <p class="plan-for">Juan's full attention, every single day.</p>
+        </header>
+        <ul class="plan-list">
+          <li class="yes">Personalized training plan</li>
+          <li class="yes">Continuous adjustments</li>
+          <li class="yes">Priority messaging</li>
+          <li class="yes">Nutrition guidance</li>
+          <li class="yes">Daily habit coaching</li>
+          <li class="yes">A video call with Juan every week</li>
+          <li class="yes">Feedback on your exercise videos</li>
+          <li class="yes">Daily accountability in coaching hours</li>
+        </ul>
+        <a href="#apply" class="btn btn-fill btn-block" data-program="PRIME"><span data-text="Apply for Prime">Apply for Prime</span></a>
+        <p class="plan-note">Few spots, full attention.</p>
+      </article>
+    </div>
+    <p class="fineprint reveal">Every client gets a personalized plan. Results depend on effort, consistency and individual circumstances.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 5b. VIP ZONE (light panel) -->
+<section class="panel members light" id="members">
+  <div class="container members-grid">
+    <div>
+      <p class="label reveal">VIP Zone · Members</p>
+      <h2 class="h2" data-split>Your plan, your numbers, <em>your coach.</em></h2>
+      <p class="section-intro reveal" style="--d: .1s">Every client gets access to the members area: your workouts, every set you log, your progress per exercise, and direct notes from Juan.</p>
+      <div class="hero-actions reveal" style="--d: .2s">
+        <a href="app/index.html" class="btn btn-fill" data-magnetic><span data-text="Login">Login</span></a>
+        <a href="app/index.html" class="btn btn-line" data-magnetic><span data-text="Create your account">Create your account</span></a>
+      </div>
+      <p class="fineprint reveal" style="--d: .3s">Sign in with Google or with a code sent to your email. New accounts are activated by your coach once your application is accepted.</p>
+    </div>
+    <ul class="members-list reveal" style="--d: .15s">
+      <li><strong>Workouts</strong><span>Your plan, day by day, built by Juan.</span></li>
+      <li><strong>Log every set</strong><span>Kilos and reps per exercise, with your last numbers always in front of you.</span></li>
+      <li><strong>Progress</strong><span>Best lifts, history and charts per exercise.</span></li>
+      <li><strong>Coach notes</strong><span>Feedback and adjustments straight from Juan.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ 6. JUAN (light panel) -->
+<section class="panel about light" id="juan">
+  <div class="container about-grid">
+    <div class="about-media-wrap">
+      <div class="about-media" data-img-reveal>
+        <div class="parallax" data-parallax="0.07">
+          <picture>
+            <source type="image/webp" srcset="assets/img/juan-portrait-800.webp 800w, assets/img/juan-portrait-1200.webp 1200w, assets/img/juan-portrait-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 44vw" />
+            <img src="assets/img/juan-portrait.jpg" alt="Juan, founder and coach of THEBETTERSELF" width="1200" height="1500" loading="lazy" decoding="async" />
+          </picture>
+        </div>
+      </div>
+      <div class="about-media-2" data-img-reveal style="--d: .3s">
+        <div class="parallax" data-parallax="0.05">
+          <picture>
+            <source type="image/webp" srcset="assets/img/juan-football-600.webp 600w, assets/img/juan-football-900.webp 900w" sizes="(max-width: 900px) 55vw, 22vw" />
+            <img src="assets/img/juan-football.jpg" alt="Juan playing football for Benfica" width="900" height="1125" loading="lazy" decoding="async" />
+          </picture>
+        </div>
+        <span class="label">Benfica</span>
+      </div>
+    </div>
+    <div class="about-copy">
+      <p class="label reveal">Your coach</p>
+      <h2 class="h2" data-split>Meet <em>Juan.</em></h2>
+      <p class="about-lead reveal">Competitive football at Benfica. Eight years in the gym. One lesson: the body is built through training, the better self through consistency.</p>
+      <p class="about-text reveal" style="--d: .1s">I give you the method, the structure and the support. You bring the commitment.</p>
+      <ul class="info-strip reveal" style="--d: .2s">
+        <li><strong>8+ yrs</strong><span>Gym</span></li>
+        <li><strong>Benfica</strong><span>Football</span></li>
+        <li><strong>1-on-1</strong><span>Coaching</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 7. APPLY (window with form) -->
+<section class="window apply dark" id="apply" data-scene="floor">
+  <div class="container apply-grid">
+    <div class="apply-head">
+      <p class="label reveal">Application</p>
+      <h2 class="display apply-title" data-split>Your better self starts with <em>a decision.</em></h2>
+      <p class="window-sub reveal">Tell us where you are and where you want to go. Juan reads every application.</p>
+    </div>
+
+    <!-- To connect a backend, set CONFIG.formEndpoint in js/main.js. Until then the form shows the confirmation without sending data. -->
+    <form class="form reveal" id="applyForm" novalidate style="--d: .1s">
+      <div class="form-row">
+        <div class="field"><label for="fullName">Full name</label><input id="fullName" name="fullName" type="text" autocomplete="name" required /></div>
+        <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required /></div>
+      </div>
+      <fieldset class="field choice">
+        <legend>Program</legend>
+        <div class="choice-grid" id="programChoice">
+          <label class="choice-item"><input type="radio" name="program" value="START" required /><span>Start</span></label>
+          <label class="choice-item"><input type="radio" name="program" value="EVOLVE" /><span>Evolve</span></label>
+          <label class="choice-item"><input type="radio" name="program" value="PRIME" /><span>Prime</span></label>
+          <label class="choice-item"><input type="radio" name="program" value="NOT SURE" /><span>Not sure</span></label>
+        </div>
+      </fieldset>
+      <div class="field"><label for="goal">What do you want to change?</label><textarea id="goal" name="goal" rows="3" required></textarea></div>
+      <div class="field check">
+        <label class="check-item">
+          <input type="checkbox" name="consent" value="yes" required />
+          <span class="check-box" aria-hidden="true"></span>
+          <span>I understand that results require consistency, effort and adherence to the coaching process.</span>
+        </label>
+      </div>
+      <p class="form-error" id="formError" role="alert" hidden>Please complete all fields before submitting.</p>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-fill btn-lg btn-block" id="submitBtn" data-magnetic><span data-text="Submit my application">Submit my application</span></button>
+        <p class="form-note">No commitment until we have spoken.</p>
+      </div>
+    </form>
+
+    <div class="form-success" id="formSuccess" hidden aria-live="polite">
+      <p class="label">Application</p>
+      <h3 class="h2">Application <em>received.</em></h3>
+      <p>Thank you for applying to THEBETTERSELF. We will review your application and contact you with the next steps.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<a href="#apply" class="sticky-cta" id="stickyCta" aria-label="Apply for coaching"><span>Apply for coaching</span><b id="stickyCtaNote"></b></a>
+
+<footer class="footer light">
+  <div class="container footer-inner">
+    <span class="wordmark">THE<b>BETTER</b>SELF</span>
+    <nav class="footer-links" aria-label="Footer">
+      <!-- EDITABLE: replace with the real Instagram URL and contact email -->
+      <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
+      <a href="mailto:hello@thebetterself.com">hello@thebetterself.com</a>
+      <a href="app/index.html">Members login</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+    </nav>
+    <p class="footer-copy">© <span id="year"></span> THEBETTERSELF</p>
+  </div>
+</footer>
+
+<script src="js/main.js?v=18" defer></script>
+</body>
+</html>

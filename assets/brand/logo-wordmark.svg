@@ -1,0 +1,6 @@
+<!-- THEBETTERSELF wordmark. Set in Inter Tight (THE / SELF at 500, BETTER at 700). Convert text to outlines before sending to print. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 80" width="640" height="80">
+  <text x="0" y="58" font-family="Inter Tight, Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="56" letter-spacing="1" fill="#0a0a0a">
+    <tspan font-weight="500">THE</tspan><tspan font-weight="700">BETTER</tspan><tspan font-weight="500">SELF</tspan>
+  </text>
+</svg>
