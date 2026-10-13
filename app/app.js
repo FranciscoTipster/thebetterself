@@ -131,7 +131,7 @@
         return finish(data.user.id);
       },
       async resetPassword(email) {
-        const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.href.split('#')[0] + '#/password' });
+        const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.href.split('#')[0] });
         if (error) throw new Error(error.message);
       },
       async updatePassword(password) {
@@ -142,6 +142,7 @@
         const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.href.split('#')[0] } });
         if (error) throw new Error(error.message);
       },
+      onAuth(fn) { sb.auth.onAuthStateChange(ev => fn(ev)); },
       async signOut() { await sb.auth.signOut(); },
       async recordLogin() { const { data } = await sb.auth.getSession(); if (data.session) await sb.from('logins').insert({ user_id: data.session.user.id, user_agent: navigator.userAgent.slice(0, 120) }); },
 
@@ -769,10 +770,12 @@
     }
   }
 
+  let recovery = /type=recovery/.test(location.href);
+  if (api.mode === 'supabase') window.supabase && api.onAuth && api.onAuth(ev => { if (ev === 'PASSWORD_RECOVERY') { recovery = true; if (state.user) { go('/password'); } } });
   (async function boot() {
     if (api.mode === 'supabase' && /access_token=|code=/.test(location.href)) { await new Promise(r => setTimeout(r, 800)); }
     state.user = await api.getUser();
-    if (state.user && api.mode === 'supabase' && /access_token=|code=/.test(location.href)) { try { await api.recordLogin(); } catch (e) {} history.replaceState(null, '', location.pathname + (/type=recovery/.test(location.href) ? '#/password' : '#/home')); }
+    if (state.user && api.mode === 'supabase' && /access_token=|code=/.test(location.href)) { try { await api.recordLogin(); } catch (e) {} history.replaceState(null, '', location.pathname + (recovery ? '#/password' : '#/home')); }
     if (!location.hash) go(state.user ? (isAdmin() ? '/admin' : '/home') : '/login');
     render();
   })();
