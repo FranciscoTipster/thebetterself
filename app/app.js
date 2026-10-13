@@ -126,7 +126,7 @@
       },
       async signUp(email, password, fullName) {
         const { data, error } = await sb.auth.signUp({ email, password, options: { data: { full_name: fullName } } });
-        if (error) throw new Error(/already registered/i.test(error.message) ? 'This email already has an account. Log in instead.' : error.message);
+        if (error) throw new Error(/already registered/i.test(error.message) ? 'This email already has an account. Log in instead.' : /rate limit/i.test(error.message) ? 'Email confirmation is still switched on and the email limit was reached. Ask your coach to switch it off, or try again in an hour.' : error.message);
         if (!data.session) throw new Error('Account created. Check your email to confirm it, then log in.');
         return finish(data.user.id);
       },
