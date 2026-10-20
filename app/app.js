@@ -314,6 +314,68 @@
     </svg>`;
   }
 
+
+  /* ======================================================================
+     PROGRESSO — componentes partilhados (admin + membro)
+     ====================================================================== */
+  const fmtShort = d => { const x = new Date(d); return isNaN(x) ? String(d) : `${String(x.getDate()).padStart(2, '0')}/${String(x.getMonth() + 1).padStart(2, '0')}`; };
+  function adherenceWeeks(sessions, planned, n = 8) {
+    const start = weekStart(); const out = [];
+    for (let i = n - 1; i >= 0; i--) {
+      const a = new Date(start); a.setDate(a.getDate() - i * 7); const b = new Date(a); b.setDate(b.getDate() + 7);
+      const count = sessions.filter(s => { const d = new Date(s.date + 'T12:00:00'); return d >= a && d < b; }).length;
+      out.push({ label: fmtShort(a), count, planned, current: i === 0 });
+    }
+    return out;
+  }
+  function barsSVG(weeks) {
+    const W = 600, H = 150, px = 10, py = 22, gap = 10;
+    const max = Math.max(1, ...weeks.map(w => Math.max(w.count, w.planned || 0)));
+    const bw = (W - 2 * px - gap * (weeks.length - 1)) / weeks.length;
+    const y = v => H - py - (v / max) * (H - 2 * py);
+    const bars = weeks.map((w, i) => {
+      const x = px + i * (bw + gap); const h = H - py - y(w.count);
+      const goal = w.planned ? `<line class="goal" x1="${x}" x2="${x + bw}" y1="${y(w.planned)}" y2="${y(w.planned)}"/>` : '';
+      return `<g class="bar${w.current ? ' is-current' : ''}${w.planned && w.count >= w.planned ? ' is-full' : ''}"><title>Semana de ${w.label}: ${w.count}${w.planned ? ' de ' + w.planned : ''} treinos</title>
+        <rect class="hit" x="${x - gap / 2}" y="0" width="${bw + gap}" height="${H}"/>
+        <rect class="fill" x="${x}" y="${h > 0 ? y(w.count) : H - py - 2}" width="${bw}" height="${h > 0 ? h : 2}" rx="3"/>${goal}
+        <text class="val" x="${x + bw / 2}" y="${(h > 0 ? y(w.count) : H - py) - 6}" text-anchor="middle">${w.count}</text>
+        <text class="lbl" x="${x + bw / 2}" y="${H - 6}" text-anchor="middle">${w.label}</text></g>`;
+    }).join('');
+    return `<svg class="chart bars" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Treinos por semana"><line class="axis" x1="${px}" y1="${H - py}" x2="${W - px}" y2="${H - py}"/>${bars}</svg>`;
+  }
+  function trendRows(hist, selected, base = '') {
+    const rows = Object.entries(hist).map(([name, arr]) => ({ name, n: arr.length, first: arr[0].best, last: arr[arr.length - 1].best, lastDate: arr[arr.length - 1].date, lastSets: arr[arr.length - 1].sets }))
+      .filter(r => r.last > 0 || r.first > 0).sort((a, b) => (b.lastDate > a.lastDate ? 1 : b.lastDate < a.lastDate ? -1 : 0));
+    if (!rows.length) return '<div class="empty">Ainda sem registos.</div>';
+    return `<div class="trend">${rows.map(r => { const d = r.last - r.first; const cls = d > 0 ? 'up' : d < 0 ? 'down' : ''; return `<a href="#${base}/${encodeURIComponent(r.name)}" class="trend-row ${r.name === selected ? 'is-on' : ''}">
+      <div class="trend-name"><strong>${esc(r.name)}</strong><span class="muted small">${r.n} ${r.n === 1 ? 'sessão' : 'sessões'} · última ${esc(fmtDate(r.lastDate))}</span></div>
+      <div class="trend-last num"><strong>${r.last} kg</strong><span class="muted small">${esc(r.lastSets.map(x => `${x.weight_kg ?? '–'}×${x.reps ?? '–'}`).join(' '))}</span></div>
+      <span class="delta ${cls} num">${r.n > 1 ? (d > 0 ? '+' : '') + d + ' kg' : 'novo'}</span></a>`; }).join('')}</div>`;
+  }
+  function exerciseChart(arr) {
+    if (!arr || !arr.length) return '<div class="empty">Escolhe um exercício.</div>';
+    const best = Math.max(...arr.map(a => a.best)); const first = arr[0].best, last = arr[arr.length - 1].best;
+    return `<div class="grid grid-3 kpis-sm">
+        <div class="card stat"><strong>${last} kg</strong><span>Última carga</span></div>
+        <div class="card stat"><strong>${best} kg</strong><span>Recorde</span></div>
+        <div class="card stat"><strong class="${last - first > 0 ? 'ok' : ''}">${arr.length > 1 ? (last - first >= 0 ? '+' : '') + (last - first) + ' kg' : '—'}</strong><span>Desde o 1.º registo</span></div>
+      </div>
+      <div class="card" style="margin-top:14px"><span class="label">Melhor carga por sessão</span>${chartSVG(arr.map(a => ({ date: a.date, v: a.best })))}
+        <table class="table keep-all"><thead><tr><th>Data</th><th>Séries (kg×reps)</th><th>Melhor</th><th>Volume</th></tr></thead><tbody>
+        ${arr.slice().reverse().slice(0, 8).map(a => `<tr><td class="num">${esc(fmtDate(a.date))}</td><td>${esc(a.sets.map(x => `${x.weight_kg ?? '–'}×${x.reps ?? '–'}`).join(' · '))}</td><td class="num">${a.best} kg</td><td class="num">${Math.round(a.volume)} kg</td></tr>`).join('')}
+        </tbody></table></div>`;
+  }
+  function sessionsTimeline(sessions, limit = 8, opts = {}) {
+    if (!sessions.length) return '<div class="empty">Ainda não registou nenhum treino.</div>';
+    return `<div class="timeline">${sessions.slice(0, limit).map(s => {
+      const groups = (s.sets || []).reduce((m, x) => { (m[x.exercise_name] = m[x.exercise_name] || []).push(`${x.weight_kg ?? '–'}×${x.reps ?? '–'}`); return m; }, {});
+      return `<div class="tl-item"><div class="tl-date num"><strong>${esc(fmtShort(s.date))}</strong><span class="muted small">${esc(new Date(s.date + 'T12:00:00').toLocaleDateString('pt-PT', { weekday: 'short' }))}</span></div>
+        <div class="tl-body"><div class="section-title"><strong class="h2" style="font-size:1rem">${esc(s.workout_title || 'Treino')}</strong><span class="muted small">${(s.sets || []).length} séries${opts.del ? ` · <button class="label" data-del="${esc(s.id)}" style="color:inherit">Apagar</button>` : ''}</span></div>
+        <div class="chips">${Object.entries(groups).map(([n, arr]) => `<span class="chip"><b>${esc(n)}</b> ${esc(arr.join(' · '))}</span>`).join('')}</div>
+        ${s.notes ? `<p class="small muted">“${esc(s.notes)}”</p>` : ''}</div></div>`; }).join('')}</div>`;
+  }
+
   /* ======================================================================
      LAYOUT
      ====================================================================== */
@@ -620,25 +682,26 @@
 
   async function viewProgress(selected) {
     const u = state.user;
-    const { sessions } = await loadMember(u.id);
+    const { workouts, sessions } = await loadMember(u.id);
     const hist = exerciseHistory(sessions);
-    const names = Object.keys(hist).sort();
-    const name = selected && hist[selected] ? selected : names[0];
-    const arr = name ? hist[name] : [];
+    const names = Object.keys(hist);
+    const name = selected && hist[selected] ? selected : (Object.entries(hist).sort((a, b) => b[1].length - a[1].length)[0] || [null])[0];
+    const planned = workouts.filter(w => w.weekday).length;
     layout('Progresso.', `
-      ${names.length ? `
-      <div class="field" style="max-width:320px"><label for="exsel">Exercício</label><select id="exsel">${names.map(n => `<option value="${esc(n)}" ${n === name ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select></div>
-      <div class="grid grid-3" style="margin-top:18px">
-        <div class="card stat"><strong>${Math.max(...arr.map(a => a.best))} kg</strong><span>Melhor carga</span></div>
-        <div class="card stat"><strong>${arr.length}</strong><span>Sessões</span></div>
-        <div class="card stat"><strong>${arr.length > 1 ? (arr[arr.length - 1].best - arr[0].best >= 0 ? '+' : '') + (arr[arr.length - 1].best - arr[0].best) + ' kg' : '—'}</strong><span>Desde o primeiro registo</span></div>
+      <div class="section" style="margin-top:0">
+        <div class="section-title"><h2 class="h2">Adesão</h2><span class="muted small">treinos por semana, últimas 8 semanas${planned ? ' · linha = objetivo' : ''}</span></div>
+        <div class="card">${barsSVG(adherenceWeeks(sessions, planned))}</div>
       </div>
-      <div class="card" style="margin-top:14px"><span class="label">Melhor carga por sessão</span>${chartSVG(arr.map(a => ({ date: a.date, v: a.best })))}</div>
-      <div class="section"><div class="section-title"><h2 class="h2">Histórico</h2></div>
-        <table class="table keep-all"><thead><tr><th>Data</th><th>Séries</th><th>Melhor</th><th>Volume</th></tr></thead><tbody>
-        ${arr.slice().reverse().map(a => `<tr><td class="num">${esc(fmtDate(a.date))}</td><td>${esc(a.sets.map(s => `${s.weight_kg ?? '–'}×${s.reps ?? '–'}`).join(' · '))}</td><td class="num">${a.best} kg</td><td class="num">${Math.round(a.volume)} kg</td></tr>`).join('')}
-        </tbody></table></div>` : '<div class="empty">Regista um treino e o teu progresso aparece aqui.</div>'}`);
-    const sel = root.querySelector('#exsel'); if (sel) sel.addEventListener('change', () => go('/progress/' + encodeURIComponent(sel.value)));
+      <div class="section">
+        <div class="section-title" id="progress"><h2 class="h2">Por exercício</h2><span class="muted small">${names.length} exercícios</span></div>
+        ${names.length ? `<div class="progress-grid"><div>${trendRows(hist, name, '/progress')}</div><div>${exerciseChart(hist[name])}</div></div>` : '<div class="empty">Regista um treino e o teu progresso aparece aqui.</div>'}
+      </div>
+      <div class="section">
+        <div class="section-title"><h2 class="h2">Sessões</h2><span class="muted small">${sessions.length} no total</span></div>
+        ${sessionsTimeline(sessions, 10, { del: true })}
+      </div>`);
+    if (selected) { const el = root.querySelector('#progress'); if (el) el.scrollIntoView({ block: 'start' }); }
+    root.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', async () => { if (!confirm('Apagar esta sessão?')) return; await api.deleteSession(b.dataset.del); toast('Sessão apagada'); render(); }));
   }
 
   async function viewNotes() {
@@ -716,58 +779,86 @@
     });
   }
 
-  async function viewClient(id) {
+  async function viewClient(id, selectedEx) {
     const d = await adminData();
     const p = d.profiles.find(x => x.id === id);
     if (!p) { go('/admin'); return; }
     const { workouts, sessions, notes } = await loadMember(id);
-    const s = statusOf(p);
+    const st = statusOf(p);
     const hist = exerciseHistory(sessions);
-    const prs = Object.entries(hist).map(([name, arr]) => ({ name, best: Math.max(...arr.map(a => a.best)) })).filter(x => x.best > 0).sort(by('best', -1)).slice(0, 6);
-    const myLogins = d.logins.filter(l => l.user_id === id).slice(0, 8);
+    const names = Object.keys(hist);
+    const exName = selectedEx && hist[selectedEx] ? selectedEx : (Object.entries(hist).sort((a, b) => b[1].length - a[1].length)[0] || [null])[0];
+    const planned = workouts.filter(w => w.weekday).length;
+    const thisWeek = sessions.filter(x => new Date(x.date + 'T12:00:00') >= weekStart()).length;
+    const lastLogin = d.lastLogin[id];
+    const base = `/admin/client/${id}`;
     layout(esc(p.full_name || p.email), `
-      <div class="grid grid-2">
-        <form class="card form" id="profForm">
-          <div class="section-title"><span class="label">Cliente</span><span class="${s.cls}"><i></i>${s.label}</span></div>
-          <div class="field"><label for="pname">Nome</label><input id="pname" value="${esc(p.full_name || '')}" /></div>
-          <div class="field"><label for="pprog">Plano adquirido</label><select id="pprog">${PROGRAMS.map(x => `<option value="${x}" ${p.program === x ? 'selected' : ''}>${PROGRAM_LABEL[x]}</option>`).join('')}</select></div>
-          <div class="muted small">${esc(p.email)} · criado ${esc(fmtDate(p.created_at))} · ${p.claimed_at ? 'entrou pela primeira vez ' + esc(fmtDate(p.claimed_at)) : 'ainda não criou conta'} · último login ${esc(fmtWhen(d.lastLogin[id]))}</div>
-          <div class="inline-actions">
+      <div class="client-head card">
+        <div class="client-meta">
+          <span class="${st.cls}"><i></i>${st.label}</span>
+          <span class="badge">${esc(PROGRAM_LABEL[p.program] || p.program || 'Plano por definir')}</span>
+          <span class="muted small">${esc(p.email)}</span>
+          <span class="muted small">${p.claimed_at ? 'na plataforma desde ' + esc(fmtDate(p.claimed_at)) : 'ainda não criou conta'}</span>
+        </div>
+        <div class="inline-actions">
+          <button class="btn ${p.approved ? 'btn-line btn-danger' : 'btn-gold'} btn-sm" type="button" id="toggleApproved">${p.approved ? 'Desativar plano' : 'Ativar plano'}</button>
+          <a href="#/admin/plan/${esc(id)}" class="btn btn-fill btn-sm">Editar plano</a>
+          <button class="btn btn-line btn-sm" type="button" id="editToggle">Dados</button>
+        </div>
+        <form class="form client-edit" id="profForm" hidden>
+          <div class="ex-editor" style="grid-template-columns: 2fr 1fr auto auto">
+            <div class="field"><label for="pname">Nome</label><input id="pname" value="${esc(p.full_name || '')}" /></div>
+            <div class="field"><label for="pprog">Plano adquirido</label><select id="pprog">${PROGRAMS.map(x => `<option value="${x}" ${p.program === x ? 'selected' : ''}>${PROGRAM_LABEL[x]}</option>`).join('')}</select></div>
             <button class="btn btn-fill btn-sm" type="submit">Guardar</button>
-            <button class="btn ${p.approved ? 'btn-line btn-danger' : 'btn-gold'} btn-sm" type="button" id="toggleApproved">${p.approved ? 'Desativar plano' : 'Ativar plano'}</button>
-            <a href="#/admin/plan/${esc(id)}" class="btn btn-line btn-sm">Editar plano</a>
             <button class="btn btn-line btn-sm btn-danger" type="button" id="delClient">Remover cliente</button>
           </div>
-          ${!p.approved ? `<p class="muted small">Enquanto o plano estiver desativado, o cliente vê "O teu plano está a ser criado para ti."</p>` : ''}
         </form>
-        <div class="grid grid-2">
-          <div class="card stat"><strong>${sessions.length}</strong><span>Treinos registados</span></div>
-          <div class="card stat"><strong>${streakWeeks(sessions)}</strong><span>Semanas seguidas</span></div>
-          <div class="card stat"><strong>${workouts.length}</strong><span>Treinos no plano</span></div>
-          <div class="card stat"><strong>${myLogins.length}</strong><span>Logins recentes</span></div>
-        </div>
+        ${!p.approved ? `<p class="muted small">Enquanto o plano estiver desativado, o cliente vê "O teu plano está a ser criado para ti."</p>` : ''}
       </div>
+
+      <div class="grid grid-5 kpis">
+        <div class="card stat"><strong>${thisWeek}${planned ? `<small>/${planned}</small>` : ''}</strong><span>Esta semana</span></div>
+        <div class="card stat"><strong>${sessions.length}</strong><span>Treinos registados</span></div>
+        <div class="card stat"><strong>${streakWeeks(sessions)}</strong><span>Semanas seguidas</span></div>
+        <div class="card stat"><strong class="sm">${sessions[0] ? esc(fmtShort(sessions[0].date)) : '—'}</strong><span>Último treino</span></div>
+        <div class="card stat"><strong class="sm">${esc(fmtWhen(lastLogin))}</strong><span>Último login</span></div>
+      </div>
+
       <div class="section">
-        <div class="section-title"><h2 class="h2">Plano de treino</h2><a href="#/admin/plan/${esc(id)}" class="btn btn-fill btn-sm">Editar plano</a></div>
-        <div class="list">${workouts.length ? workouts.map(w => `<div class="row cols-2"><div><strong>${esc(w.weekday ? dayName(w.weekday) + ' · ' : (w.day_label ? w.day_label + ' · ' : ''))}${esc(w.title)}</strong><div class="muted">${esc(w.exercises.map(e => `${e.name} ${e.target_sets}×${e.target_reps}`).join(' · '))}</div></div><div class="thumbs">${w.exercises.slice(0, 5).map(e => mediaHTML(e, 'thumb')).join('')}</div></div>`).join('') : '<div class="empty">Ainda sem treinos. Clica em "Editar plano" para montar.</div>'}</div>
+        <div class="section-title"><h2 class="h2">Esta semana</h2><span class="muted small">${planned ? `${planned} treinos planeados` : 'sem dias definidos'}</span></div>
+        ${workouts.length ? weekStrip(workouts, sessions) : '<div class="empty">Ainda sem treinos no plano. <a href="#/admin/plan/' + esc(id) + '" style="text-decoration:underline">Montar plano</a>.</div>'}
       </div>
-      <div class="grid grid-2" style="margin-top:36px">
-        <div class="section" style="margin-top:0"><div class="section-title"><h2 class="h2">Recordes</h2></div>
-          <div class="list">${prs.length ? prs.map(x => `<div class="row cols-2"><strong>${esc(x.name)}</strong><span class="num">${x.best} kg</span></div>`).join('') : '<div class="empty">Ainda sem registos.</div>'}</div></div>
-        <div class="section" style="margin-top:0"><div class="section-title"><h2 class="h2">Logins</h2></div>
-          <div class="list">${myLogins.length ? myLogins.map(l => `<div class="row cols-2"><span class="num">${esc(fmtWhen(l.at))}</span><span class="muted small">${esc((l.user_agent || '').slice(0, 40))}</span></div>`).join('') : '<div class="empty">Ainda sem logins.</div>'}</div></div>
-      </div>
+
       <div class="section">
-        <div class="section-title"><h2 class="h2">Sessões recentes</h2></div>
-        <div class="grid">${sessions.slice(0, 6).map(x => `<div class="card"><div class="section-title"><strong class="h2" style="font-size:1rem">${esc(x.workout_title || 'Treino')}</strong><span class="muted num small">${esc(fmtDate(x.date))}</span></div>
-          <div class="muted small">${esc(Object.entries((x.sets || []).reduce((m, st) => { (m[st.exercise_name] = m[st.exercise_name] || []).push(`${st.weight_kg ?? '–'}×${st.reps ?? '–'}`); return m; }, {})).map(([n, arr]) => `${n}: ${arr.join(' ')}`).join(' · '))}</div>
-          ${x.notes ? `<p class="small">“${esc(x.notes)}”</p>` : ''}</div>`).join('') || '<div class="empty">Ainda não registou nenhum treino.</div>'}</div>
+        <div class="section-title"><h2 class="h2">Adesão</h2><span class="muted small">treinos por semana, últimas 8 semanas${planned ? ' · linha = objetivo' : ''}</span></div>
+        <div class="card">${barsSVG(adherenceWeeks(sessions, planned))}</div>
       </div>
+
+      <div class="section">
+        <div class="section-title" id="progress"><h2 class="h2">Progresso por exercício</h2><span class="muted small">${names.length} exercícios com registos</span></div>
+        ${names.length ? `<div class="progress-grid">
+          <div>${trendRows(hist, exName, base)}</div>
+          <div>${exerciseChart(hist[exName])}</div>
+        </div>` : '<div class="empty">Quando o cliente registar treinos, o progresso aparece aqui.</div>'}
+      </div>
+
+      <div class="section">
+        <div class="section-title"><h2 class="h2">Sessões</h2><span class="muted small">${sessions.length} no total</span></div>
+        ${sessionsTimeline(sessions, 10)}
+      </div>
+
+      <div class="section">
+        <div class="section-title"><h2 class="h2">Plano de treino</h2><a href="#/admin/plan/${esc(id)}" class="label">Editar →</a></div>
+        <div class="list">${workouts.length ? workouts.map(w => `<div class="row cols-2"><div><strong>${esc(w.weekday ? dayName(w.weekday) + ' · ' : (w.day_label ? w.day_label + ' · ' : ''))}${esc(w.title)}</strong><div class="muted">${esc(w.exercises.map(e => `${e.name} ${e.target_sets}×${e.target_reps}`).join(' · '))}</div></div><div class="thumbs">${w.exercises.slice(0, 5).map(e => mediaHTML(e, 'thumb')).join('')}</div></div>`).join('') : '<div class="empty">Ainda sem treinos.</div>'}</div>
+      </div>
+
       <div class="section">
         <div class="section-title"><h2 class="h2">Notas</h2></div>
         <form class="form" id="coachNote" style="max-width:640px"><div class="field"><label for="cbody">Nota para ${esc(firstName(p) || 'o cliente')}</label><textarea id="cbody" rows="3" placeholder="Feedback, ajustes, motivação…" required></textarea></div><button class="btn btn-gold btn-sm" type="submit" style="justify-self:start">Enviar nota</button></form>
         <div class="grid">${notes.map(n => `<div class="note ${n.kind === 'coach' ? 'coach' : ''}"><div class="note-meta"><span>${n.kind === 'coach' ? 'Coach' : esc(firstName(p) || 'Cliente')}</span><span>${esc(fmtWhen(n.created_at))} · <button class="label" data-deln="${esc(n.id)}" style="color:inherit">Apagar</button></span></div><p>${esc(n.body)}</p></div>`).join('') || '<div class="empty">Ainda sem notas.</div>'}</div>
       </div>`, { right: `<a href="#/admin" class="btn btn-line btn-sm">← Clientes</a>` });
+    if (selectedEx) { const el = root.querySelector('#progress'); if (el) el.scrollIntoView({ block: 'start' }); }
+    root.querySelector('#editToggle').addEventListener('click', () => { const f = root.querySelector('#profForm'); f.hidden = !f.hidden; if (!f.hidden) f.querySelector('#pname').focus(); });
     root.querySelector('#profForm').addEventListener('submit', async e => { e.preventDefault(); await api.updateProfile(id, { full_name: root.querySelector('#pname').value.trim(), program: root.querySelector('#pprog').value }); toast('Guardado'); render(); });
     root.querySelector('#toggleApproved').addEventListener('click', async () => { await api.updateProfile(id, { approved: !p.approved }); toast(!p.approved ? 'Plano ativado' : 'Plano desativado'); render(); });
     root.querySelector('#delClient').addEventListener('click', async () => {
@@ -893,7 +984,7 @@
         case 'progress': return await viewProgress(params[0] ? decodeURIComponent(params[0]) : null);
         case 'notes': return await viewNotes();
         case 'admin':
-          if (params[0] === 'client') return await viewClient(params[1]);
+          if (params[0] === 'client') return await viewClient(params[1], params[2] ? decodeURIComponent(params[2]) : null);
           if (params[0] === 'plan') return await viewPlan(params[1]);
           if (params[0] === 'activity') return await viewActivity();
           return await viewAdmin();
