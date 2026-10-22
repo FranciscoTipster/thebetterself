@@ -26,7 +26,7 @@
   /* ----------------------------------------------------------------------
      Split headlines into masked words (keeps <em> and <br>)
      ---------------------------------------------------------------------- */
-  $$('[data-split]').forEach(el => {
+  function splitHeadline(el) {
     const nodes = Array.from(el.childNodes);
     el.textContent = '';
     let i = 0;
@@ -42,7 +42,48 @@
       const isEm = n.nodeType === 1 && n.tagName === 'EM';
       n.textContent.trim().split(/\s+/).filter(Boolean).forEach(word => push(word, isEm));
     });
-  });
+  }
+
+  /* ----------------------------------------------------------------------
+     Language — Portuguese is the markup, English comes from js/i18n.js
+     ---------------------------------------------------------------------- */
+  const EN = window.TBS_EN || {};
+  const LANG_KEY = 'tbs-lang';
+  const PT = { html: new Map(), attr: new Map(), title: document.title,
+               desc: ($('meta[name="description"]') || {}).content || '' };
+  $$('[data-i18n]').forEach(el => PT.html.set(el, el.innerHTML));
+  ['alt', 'aria'].forEach(kind => $$(`[data-i18n-${kind}]`).forEach(el => {
+    const name = kind === 'aria' ? 'aria-label' : 'alt';
+    PT.attr.set(el, { name, value: el.getAttribute(name) });
+  }));
+  let lang = 'pt';
+  const t = (key, fallback) => (lang === 'en' ? (EN[key] || fallback) : fallback);
+
+  function applyLang(next) {
+    lang = next === 'en' ? 'en' : 'pt';
+    const en = lang === 'en';
+    $$('[data-i18n]').forEach(el => {
+      const html = en ? (EN[el.dataset.i18n] || PT.html.get(el)) : PT.html.get(el);
+      if (html != null && el.innerHTML !== html) el.innerHTML = html;
+      if (el.hasAttribute('data-text')) el.setAttribute('data-text', el.textContent.trim());
+    });
+    PT.attr.forEach((def, el) => {
+      const key = el.dataset.i18nAlt || el.dataset.i18nAria;
+      el.setAttribute(def.name, en ? (EN[key] || def.value) : def.value);
+    });
+    document.documentElement.lang = lang;
+    document.title = en ? (EN['meta.title'] || PT.title) : PT.title;
+    const meta = $('meta[name="description"]');
+    if (meta) meta.content = en ? (EN['meta.desc'] || PT.desc) : PT.desc;
+    $$('[data-split]').forEach(splitHeadline);
+    $$('.lang-switch button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+    document.dispatchEvent(new CustomEvent('tbs:lang', { detail: lang }));
+  }
+
+  let saved = null; try { saved = localStorage.getItem(LANG_KEY); } catch (e) {}
+  applyLang(saved || ((navigator.language || '').toLowerCase().startsWith('pt') ? 'pt' : 'en'));
+  $$('.lang-switch button').forEach(b => b.addEventListener('click', () => applyLang(b.dataset.lang)));
 
   /* ----------------------------------------------------------------------
      Anchor links: smooth native scroll
@@ -156,7 +197,7 @@
   const mobileMenu = $('#mobileMenu');
   function setMenu(open) {
     burger.setAttribute('aria-expanded', String(open));
-    burger.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+    burger.setAttribute('aria-label', open ? t('nav.close', 'Fechar menu') : t('nav.open', 'Abrir menu'));
     mobileMenu.classList.toggle('is-open', open);
     mobileMenu.setAttribute('aria-hidden', String(!open));
     document.body.classList.toggle('menu-open', open);
@@ -355,7 +396,11 @@
       s.style.transitionDelay = `${i * 40}ms`;
       wrap.appendChild(s);
     }
-    text.textContent = spotsLeft === 0 ? 'Todas as vagas preenchidas.' : `${spotsLeft} de ${total} vagas disponíveis.`;
+    const fill = () => { text.textContent = spotsLeft === 0
+      ? t('founding.full', 'Todas as vagas preenchidas.')
+      : t('founding.text', `${spotsLeft} de ${total} vagas disponíveis.`).replace('{n}', spotsLeft).replace('{total}', total); };
+    fill();
+    document.addEventListener('tbs:lang', fill);
   })();
 
   /* ----------------------------------------------------------------------
@@ -382,7 +427,10 @@
   const sticky = $('#stickyCta');
   const applySection = $('#apply');
   if (sticky) {
-    $('#stickyCtaNote').textContent = spotsLeft > 0 ? `${spotsLeft} vagas de fundador` : '';
+    const note = () => { $('#stickyCtaNote').textContent = spotsLeft > 0
+      ? t('sticky.note', `${spotsLeft} vagas de fundador`).replace('{n}', spotsLeft) : ''; };
+    note();
+    document.addEventListener('tbs:lang', note);
     const update = () => {
       const r = applySection.getBoundingClientRect();
       const formVisible = r.top < window.innerHeight * 0.6 && r.bottom > 0;

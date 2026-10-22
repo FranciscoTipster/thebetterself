@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet" />
   <link rel="preload" as="image" href="assets/img/juan-hero.jpg" imagesrcset="assets/img/juan-hero-800.webp 800w, assets/img/juan-hero-1200.webp 1200w, assets/img/juan-hero-1600.webp 1600w" imagesizes="(max-width: 900px) 100vw, 46vw" />
-  <link rel="stylesheet" href="css/styles.css?v=24" />
+  <link rel="stylesheet" href="css/styles.css?v=25" />
 
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"Organization","name":"THEBETTERSELF","alternateName":"TBS","url":"https://thebetterself.com/","logo":"https://thebetterself.com/assets/brand/tbs-monogram-512.png","description":"Personalized online fitness coaching designed to help you build a stronger body, better habits and a more disciplined lifestyle.","founder":{"@type":"Person","name":"Juan"}}
@@ -31,7 +31,7 @@
 </head>
 <body>
 
-<a class="skip-link" href="#main">Saltar para o conteúdo</a>
+<a class="skip-link" href="#main" data-i18n="nav.skip">Saltar para o conteúdo</a>
 
 <!-- Intro -->
 <div class="loader" id="loader" aria-hidden="true">
@@ -55,14 +55,18 @@
       <span class="monogram" aria-hidden="true">TBS</span>
     </a>
     <nav class="nav-links" aria-label="Principal">
-      <a href="#results">Resultados</a>
+      <a data-i18n="nav.results" href="#results">Resultados</a>
       <a href="#coaching">Coaching</a>
       <a href="#juan">Juan</a>
-      <a href="#members">Zona VIP</a>
+      <a data-i18n="nav.vip" href="#members">Zona VIP</a>
     </nav>
     <div class="nav-right">
-      <a href="https://thebetterself.vercel.app/app/index.html" class="btn btn-line btn-sm nav-login"><span data-text="Entrar / Criar conta">Entrar / Criar conta</span></a>
-      <a href="#apply" class="btn btn-fill btn-sm" data-magnetic><span data-text="Começar">Começar</span></a>
+      <a href="https://thebetterself.vercel.app/app/index.html" class="btn btn-line btn-sm nav-login"><span data-i18n="nav.login" data-text="Entrar / Criar conta">Entrar / Criar conta</span></a>
+      <div class="lang-switch" role="group" aria-label="Idioma / Language">
+        <button type="button" data-lang="pt">PT</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+      <a href="#apply" class="btn btn-fill btn-sm" data-magnetic><span data-i18n="nav.apply" data-text="Começar">Começar</span></a>
       <button class="nav-burger" id="navBurger" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span></button>
     </div>
   </div>
@@ -70,15 +74,19 @@
 
 <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
   <nav class="mobile-menu-links" aria-label="Telemóvel">
-    <a href="#results"><span>01</span>Resultados</a>
+    <a data-i18n="mm.results" href="#results"><span>01</span>Resultados</a>
     <a href="#coaching"><span>02</span>Coaching</a>
     <a href="#juan"><span>03</span>Juan</a>
-    <a href="#apply"><span>04</span>Começar</a>
-    <a href="https://thebetterself.vercel.app/app/index.html"><span>05</span>Entrar · Zona VIP</a>
+    <a data-i18n="mm.apply" href="#apply"><span>04</span>Começar</a>
+    <a href="https://thebetterself.vercel.app/app/index.html"><span data-i18n="mm.login">05</span>Entrar · Zona VIP</a>
   </nav>
   <div class="mobile-menu-foot">
-    <a href="https://thebetterself.vercel.app/app/index.html" class="btn btn-line btn-block"><span data-text="Entrar">Entrar</span></a>
-    <a href="#apply" class="btn btn-fill btn-block"><span data-text="Quero começar">Quero começar</span></a>
+    <div class="lang-switch" role="group" aria-label="Idioma / Language">
+      <button type="button" data-lang="pt">PT</button>
+      <button type="button" data-lang="en">EN</button>
+    </div>
+    <a href="https://thebetterself.vercel.app/app/index.html" class="btn btn-line btn-block"><span data-i18n="mm.loginBtn" data-text="Entrar">Entrar</span></a>
+    <a href="#apply" class="btn btn-fill btn-block"><span data-i18n="cta.applyMM" data-text="Quero começar">Quero começar</span></a>
   </div>
 </div>
 
@@ -88,24 +96,24 @@
 <section class="panel hero light" id="top">
   <div class="container hero-grid">
     <div class="hero-copy">
-      <p class="label reveal">Coaching online · 1-para-1 · À distância</p>
-      <h1 class="display" data-split>Constrói o corpo.<br />Torna-te a tua <em>melhor versão.</em></h1>
-      <p class="hero-sub reveal" style="--d: .5s">Um plano personalizado, orientação a sério e alguém à tua espera para treinares.</p>
+      <p data-i18n="hero.kicker" class="label reveal">Coaching online · 1-para-1 · À distância</p>
+      <h1 data-i18n="hero.h1" class="display" data-split>Constrói o corpo.<br />Torna-te a tua <em>melhor versão.</em></h1>
+      <p data-i18n="hero.sub" class="hero-sub reveal" style="--d: .5s">Um plano personalizado, orientação a sério e alguém à tua espera para treinares.</p>
       <div class="hero-actions reveal" style="--d: .65s">
-        <a href="#apply" class="btn btn-fill btn-lg" data-magnetic><span data-text="Quero começar">Quero começar</span></a>
-        <a href="#results" class="btn btn-text"><span data-text="Vê 60 dias de trabalho">Vê 60 dias de trabalho</span><i></i></a>
+        <a href="#apply" class="btn btn-fill btn-lg" data-magnetic><span data-i18n="cta.apply2" data-text="Quero começar">Quero começar</span></a>
+        <a href="#results" class="btn btn-text"><span data-i18n="hero.see" data-text="Vê 60 dias de trabalho">Vê 60 dias de trabalho</span><i></i></a>
       </div>
       <ul class="trust reveal" style="--d: .9s">
-        <li>Coach Juan, 1-para-1</li>
-        <li><span id="heroSpots">15</span> de 15 vagas de fundador</li>
-        <li>Sem compromisso até falarmos</li>
+        <li data-i18n="hero.t1">Coach Juan, 1-para-1</li>
+        <li><span id="heroSpots">15</span> <span data-i18n="hero.t2">de 15 vagas de fundador</span></li>
+        <li data-i18n="hero.t3">Sem compromisso até falarmos</li>
       </ul>
     </div>
     <div class="hero-media" data-img-reveal>
       <div class="parallax" data-parallax="0.08" data-pointer="14">
         <picture>
           <source type="image/webp" srcset="assets/img/juan-hero-800.webp 800w, assets/img/juan-hero-1200.webp 1200w, assets/img/juan-hero-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 46vw" />
-          <img src="assets/img/juan-hero.jpg" alt="Coach Juan, de braços cruzados" width="1200" height="1600" fetchpriority="high" decoding="async" />
+          <img data-i18n-alt="alt.hero" src="assets/img/juan-hero.jpg" alt="Coach Juan, de braços cruzados" width="1200" height="1600" fetchpriority="high" decoding="async" />
         </picture>
       </div>
     </div>
@@ -113,11 +121,11 @@
 </section>
 
 <!-- ============================================================ 2. WINDOW: the gym shows through -->
-<section class="window dark" data-scene="plate" aria-label="Sem atalhos">
+<section data-i18n-aria="aria.w1" class="window dark" data-scene="plate" aria-label="Sem atalhos">
   <div class="container window-inner">
-    <p class="label reveal">O método</p>
-    <h2 class="display" data-split>Sem atalhos. Só um <em>sistema melhor.</em></h2>
-    <p class="window-sub reveal" style="--d: .3s">Estrutura. Disciplina. Responsabilidade. Progresso.</p>
+    <p data-i18n="w1.label" class="label reveal">O método</p>
+    <h2 data-i18n="w1.h2" class="display" data-split>Sem atalhos. Só um <em>sistema melhor.</em></h2>
+    <p data-i18n="w1.sub" class="window-sub reveal" style="--d: .3s">Estrutura. Disciplina. Responsabilidade. Progresso.</p>
   </div>
 </section>
 
@@ -125,45 +133,45 @@
 <section class="panel results light" id="results">
   <div class="container results-grid">
     <div class="results-copy">
-      <p class="label reveal">Progresso real</p>
-      <div class="cal reveal" id="cal" aria-label="60 dias">
+      <p data-i18n="r.label" class="label reveal">Progresso real</p>
+      <div data-i18n-aria="aria.cal" class="cal reveal" id="cal" aria-label="60 dias">
         <div class="cal-card">
-          <span class="cal-top">Dia</span>
+          <span data-i18n="r.day" class="cal-top">Dia</span>
           <span class="cal-num" id="calNum">1</span>
         </div>
         <div class="cal-grid" id="calGrid" aria-hidden="true"></div>
         <div class="cal-leaves" id="calLeaves" aria-hidden="true"></div>
       </div>
-      <h2 class="h2" data-split>Centenas de pequenas decisões, <em>repetidas.</em></h2>
-      <p class="fineprint reveal">Fotografias reais, com 60 dias de intervalo. Os resultados dependem do esforço, da consistência e das circunstâncias de cada pessoa.</p>
-      <a href="#coaching" class="btn btn-fill reveal" data-magnetic><span data-text="Ver os planos">Ver os planos</span></a>
+      <h2 data-i18n="r.h2" class="h2" data-split>Centenas de pequenas decisões, <em>repetidas.</em></h2>
+      <p data-i18n="r.fine" class="fineprint reveal">Fotografias reais, com 60 dias de intervalo. Os resultados dependem do esforço, da consistência e das circunstâncias de cada pessoa.</p>
+      <a href="#coaching" class="btn btn-fill reveal" data-magnetic><span data-i18n="r.btn" data-text="Ver os planos">Ver os planos</span></a>
     </div>
     <figure class="ba reveal" style="--d: .15s">
       <div class="ba-frame" data-ba style="--pos: 50%">
         <picture class="ba-after">
           <source type="image/webp" srcset="assets/img/transformations/tf-02-after.webp" />
-          <img src="assets/img/transformations/tf-02-after.jpg" alt="Depois de 60 dias de acompanhamento" width="1000" height="1250" loading="lazy" decoding="async" draggable="false" />
+          <img data-i18n-alt="alt.after" src="assets/img/transformations/tf-02-after.jpg" alt="Depois de 60 dias de acompanhamento" width="1000" height="1250" loading="lazy" decoding="async" draggable="false" />
         </picture>
         <picture class="ba-before">
           <source type="image/webp" srcset="assets/img/transformations/tf-02-before.webp" />
-          <img src="assets/img/transformations/tf-02-before.jpg" alt="Antes do acompanhamento" width="1000" height="1250" loading="lazy" decoding="async" draggable="false" />
+          <img data-i18n-alt="alt.before" src="assets/img/transformations/tf-02-before.jpg" alt="Antes do acompanhamento" width="1000" height="1250" loading="lazy" decoding="async" draggable="false" />
         </picture>
-        <span class="ba-tag ba-tag-before">Antes</span>
-        <span class="ba-tag ba-tag-after">Depois</span>
+        <span data-i18n="r.before" class="ba-tag ba-tag-before">Antes</span>
+        <span data-i18n="r.after" class="ba-tag ba-tag-after">Depois</span>
         <div class="ba-handle" aria-hidden="true"><span></span></div>
-        <input type="range" class="ba-range" min="0" max="100" value="50" step="0.1" aria-label="Comparar antes e depois, 60 dias" />
+        <input data-i18n-aria="aria.range" type="range" class="ba-range" min="0" max="100" value="50" step="0.1" aria-label="Comparar antes e depois, 60 dias" />
       </div>
-      <figcaption class="ba-caption"><span class="label">Arrasta para comparar</span><span class="label">Transformação de 60 dias</span></figcaption>
+      <figcaption class="ba-caption"><span data-i18n="r.drag" class="label">Arrasta para comparar</span><span data-i18n="r.cap" class="label">Transformação de 60 dias</span></figcaption>
     </figure>
   </div>
 </section>
 
 <!-- ============================================================ 4. WINDOW -->
-<section class="window dark" data-scene="runner" aria-label="A disciplina ganha à motivação">
+<section data-i18n-aria="aria.w2" class="window dark" data-scene="runner" aria-label="A disciplina ganha à motivação">
   <div class="container window-inner">
-    <p class="label reveal">Todos os dias</p>
-    <h2 class="display" data-split>A disciplina ganha <em>à motivação.</em></h2>
-    <p class="window-sub reveal" style="--d: .3s">A motivação aparece quando quer. A disciplina aparece à mesma.</p>
+    <p data-i18n="w2.label" class="label reveal">Todos os dias</p>
+    <h2 data-i18n="w2.h2" class="display" data-split>A disciplina ganha <em>à motivação.</em></h2>
+    <p data-i18n="w2.sub" class="window-sub reveal" style="--d: .3s">A motivação aparece quando quer. A disciplina aparece à mesma.</p>
   </div>
 </section>
 
@@ -173,11 +181,11 @@
     <div class="section-head split">
       <div>
         <p class="label reveal">Coaching</p>
-        <h2 class="h2" data-split>Escolhe o teu nível de <em>acompanhamento.</em></h2>
+        <h2 data-i18n="p.h2" class="h2" data-split>Escolhe o teu nível de <em>acompanhamento.</em></h2>
       </div>
       <div class="founding reveal" style="--d: .2s">
-        <p class="label">Os primeiros 15</p>
-        <p class="founding-text">Preço de fundador para os primeiros 15 clientes. <span id="foundingText"></span></p>
+        <p data-i18n="p.first" class="label">Os primeiros 15</p>
+        <p class="founding-text"><span data-i18n="p.founding">Preço de fundador para os primeiros 15 clientes.</span> <span id="foundingText"></span></p>
         <div class="founding-segments" id="foundingSegments" aria-hidden="true"></div>
       </div>
     </div>
@@ -186,73 +194,73 @@
       <!-- START -->
       <article class="plan plan-start reveal" data-spot>
         <header class="plan-head">
-          <span class="plan-flag plan-flag-quiet">Início</span>
+          <span data-i18n="p.flag1" class="plan-flag plan-flag-quiet">Início</span>
           <h3 class="plan-name">Start</h3>
-          <p class="plan-price">€59<span class="dec">,90</span><span class="per">/ mês</span></p>
-          <p class="plan-meta"><span class="plan-was">€79,90</span><span class="plan-day">≈ €2 por dia</span></p>
-          <p class="plan-for">A estrutura que precisas para começar.</p>
+          <p class="plan-price">€59<span data-i18n="p.dec" class="dec">,90</span><span data-i18n="p.per" class="per">/ mês</span></p>
+          <p class="plan-meta"><span data-i18n="p.was1" class="plan-was">€79,90</span><span data-i18n="p.day1" class="plan-day">≈ €2 por dia</span></p>
+          <p data-i18n="p.for1" class="plan-for">A estrutura que precisas para começar.</p>
         </header>
         <ul class="plan-list">
-          <li class="yes"><span>Avaliação inicial e definição de objetivos</span></li>
-          <li class="yes"><span>Plano de treino personalizado</span></li>
-          <li class="yes"><span>Acesso a vídeos demonstrativos dos exercícios</span></li>
-          <li class="yes"><span>Orientações sobre alimentação e hábitos alimentares</span></li>
-          <li class="yes"><span>Check-in <b>mensal</b> de progresso</span></li>
-          <li class="yes"><span>Revisão e ajustes <b>mensais</b> do plano, quando necessário</span></li>
-          <li class="yes"><span>Esclarecimento de dúvidas por WhatsApp <b>no check-in mensal</b></span></li>
-          <li class="no"><span>Sem videochamadas</span></li>
+          <li class="yes"><span data-i18n="p.i1">Avaliação inicial e definição de objetivos</span></li>
+          <li class="yes"><span data-i18n="p.i2">Plano de treino personalizado</span></li>
+          <li class="yes"><span data-i18n="p.i3">Acesso a vídeos demonstrativos dos exercícios</span></li>
+          <li class="yes"><span data-i18n="p.s4">Orientações sobre alimentação e hábitos alimentares</span></li>
+          <li class="yes"><span data-i18n="p.s5">Check-in <b>mensal</b> de progresso</span></li>
+          <li class="yes"><span data-i18n="p.s6">Revisão e ajustes <b>mensais</b> do plano, quando necessário</span></li>
+          <li class="yes"><span data-i18n="p.s7">Esclarecimento de dúvidas por WhatsApp <b>no check-in mensal</b></span></li>
+          <li class="no"><span data-i18n="p.s8">Sem videochamadas</span></li>
         </ul>
-        <p class="plan-ideal">Ideal para quem é autónomo e procura um caminho claro para começar.</p>
-        <a href="#apply" class="btn btn-line btn-block" data-program="START"><span data-text="Começar agora">Começar agora</span></a>
+        <p data-i18n="p.id1" class="plan-ideal">Ideal para quem é autónomo e procura um caminho claro para começar.</p>
+        <a href="#apply" class="btn btn-line btn-block" data-program="START"><span data-i18n="p.btn1" data-text="Começar agora">Começar agora</span></a>
       </article>
 
       <!-- EVOLVE -->
       <article class="plan plan-featured reveal" style="--d: .1s" data-spot>
         <header class="plan-head">
-          <span class="plan-flag">Recomendado</span>
+          <span data-i18n="p.flag2" class="plan-flag">Recomendado</span>
           <h3 class="plan-name">Evolve</h3>
-          <p class="plan-price">€99<span class="dec">,90</span><span class="per">/ mês</span></p>
-          <p class="plan-meta"><span class="plan-was">€129,90</span><span class="plan-day">≈ €3,33 por dia</span></p>
-          <p class="plan-for">Evolui com orientação próxima e apoio para manteres a consistência.</p>
+          <p class="plan-price">€99<span data-i18n="p.dec" class="dec">,90</span><span data-i18n="p.per" class="per">/ mês</span></p>
+          <p class="plan-meta"><span data-i18n="p.was2" class="plan-was">€129,90</span><span data-i18n="p.day2" class="plan-day">≈ €3,33 por dia</span></p>
+          <p data-i18n="p.for2" class="plan-for">Evolui com orientação próxima e apoio para manteres a consistência.</p>
         </header>
         <ul class="plan-list">
-          <li class="yes"><span>Avaliação inicial e definição de objetivos</span></li>
-          <li class="yes"><span>Plano de treino personalizado</span></li>
-          <li class="yes"><span>Acesso a vídeos demonstrativos dos exercícios</span></li>
-          <li class="yes"><span>Acompanhamento nutricional individualizado à tua rotina e aos teus objetivos</span></li>
-          <li class="yes"><span>Check-in <b>quinzenal</b> para analisar o progresso e identificar dificuldades</span></li>
-          <li class="yes"><span>Revisão e ajustes <b>quinzenais</b> do plano, quando necessário</span></li>
-          <li class="yes"><span>Apoio por WhatsApp entre check-ins, resposta <b>até 2 dias úteis</b></span></li>
-          <li class="yes hi"><span><b>Videochamada individual de 30 min a cada 15 dias</b> para esclarecer dúvidas, avaliar a evolução e definir os próximos passos</span></li>
+          <li class="yes"><span data-i18n="p.i1">Avaliação inicial e definição de objetivos</span></li>
+          <li class="yes"><span data-i18n="p.i2">Plano de treino personalizado</span></li>
+          <li class="yes"><span data-i18n="p.i3">Acesso a vídeos demonstrativos dos exercícios</span></li>
+          <li class="yes"><span data-i18n="p.e4">Acompanhamento nutricional individualizado à tua rotina e aos teus objetivos</span></li>
+          <li class="yes"><span data-i18n="p.e5">Check-in <b>quinzenal</b> para analisar o progresso e identificar dificuldades</span></li>
+          <li class="yes"><span data-i18n="p.e6">Revisão e ajustes <b>quinzenais</b> do plano, quando necessário</span></li>
+          <li class="yes"><span data-i18n="p.e7">Apoio por WhatsApp entre check-ins, resposta <b>até 2 dias úteis</b></span></li>
+          <li class="yes hi"><span data-i18n="p.e8"><b>Videochamada individual de 30 min a cada 15 dias</b> para esclarecer dúvidas, avaliar a evolução e definir os próximos passos</span></li>
         </ul>
-        <p class="plan-ideal">Ideal para quem procura apoio regular para treinar com confiança e manter a consistência.</p>
-        <a href="#apply" class="btn btn-fill btn-block" data-program="EVOLVE"><span data-text="Quero evoluir">Quero evoluir</span></a>
+        <p data-i18n="p.id2" class="plan-ideal">Ideal para quem procura apoio regular para treinar com confiança e manter a consistência.</p>
+        <a href="#apply" class="btn btn-fill btn-block" data-program="EVOLVE"><span data-i18n="p.btn2" data-text="Quero evoluir">Quero evoluir</span></a>
       </article>
 
       <!-- PRIME -->
       <article class="plan plan-prime reveal" style="--d: .2s" data-spot>
         <header class="plan-head">
-          <span class="plan-flag plan-flag-prime">Acompanhamento máximo</span>
+          <span data-i18n="p.flag3" class="plan-flag plan-flag-prime">Acompanhamento máximo</span>
           <h3 class="plan-name">Prime</h3>
-          <p class="plan-price">€199<span class="dec">,90</span><span class="per">/ mês</span></p>
-          <p class="plan-meta"><span class="plan-was">€249,90</span><span class="plan-day">≈ €6,66 por dia</span></p>
-          <p class="plan-for">O acompanhamento mais próximo da BetterSelf, semana após semana.</p>
+          <p class="plan-price">€199<span data-i18n="p.dec" class="dec">,90</span><span data-i18n="p.per" class="per">/ mês</span></p>
+          <p class="plan-meta"><span data-i18n="p.was3" class="plan-was">€249,90</span><span data-i18n="p.day3" class="plan-day">≈ €6,66 por dia</span></p>
+          <p data-i18n="p.for3" class="plan-for">O acompanhamento mais próximo da BetterSelf, semana após semana.</p>
         </header>
         <ul class="plan-list">
-          <li class="yes"><span>Avaliação inicial e definição de objetivos</span></li>
-          <li class="yes"><span>Plano de treino personalizado</span></li>
-          <li class="yes"><span>Acesso a vídeos demonstrativos dos exercícios</span></li>
-          <li class="yes"><span>Acompanhamento nutricional individualizado com <b>revisão semanal</b></span></li>
-          <li class="yes"><span>Check-in <b>semanal</b> para acompanhar a evolução de perto</span></li>
-          <li class="yes"><span>Revisão e ajustes <b>semanais</b> do plano, quando necessário</span></li>
-          <li class="yes hi"><span><b>Apoio prioritário</b> por WhatsApp entre check-ins, resposta <b>até 1 dia útil</b></span></li>
-          <li class="yes hi"><span><b>Videochamada individual de 30 min por semana</b> para analisar dificuldades, adaptar a estratégia e definir as prioridades da semana</span></li>
+          <li class="yes"><span data-i18n="p.i1">Avaliação inicial e definição de objetivos</span></li>
+          <li class="yes"><span data-i18n="p.i2">Plano de treino personalizado</span></li>
+          <li class="yes"><span data-i18n="p.i3">Acesso a vídeos demonstrativos dos exercícios</span></li>
+          <li class="yes"><span data-i18n="p.r4">Acompanhamento nutricional individualizado com <b>revisão semanal</b></span></li>
+          <li class="yes"><span data-i18n="p.r5">Check-in <b>semanal</b> para acompanhar a evolução de perto</span></li>
+          <li class="yes"><span data-i18n="p.r6">Revisão e ajustes <b>semanais</b> do plano, quando necessário</span></li>
+          <li class="yes hi"><span data-i18n="p.r7"><b>Apoio prioritário</b> por WhatsApp entre check-ins, resposta <b>até 1 dia útil</b></span></li>
+          <li class="yes hi"><span data-i18n="p.r8"><b>Videochamada individual de 30 min por semana</b> para analisar dificuldades, adaptar a estratégia e definir as prioridades da semana</span></li>
         </ul>
-        <p class="plan-ideal">Ideal para quem valoriza contacto frequente e quer acompanhamento próximo em cada etapa.</p>
-        <a href="#apply" class="btn btn-fill btn-block" data-program="PRIME"><span data-text="Quero o acompanhamento Prime">Quero o acompanhamento Prime</span></a>
+        <p data-i18n="p.id3" class="plan-ideal">Ideal para quem valoriza contacto frequente e quer acompanhamento próximo em cada etapa.</p>
+        <a href="#apply" class="btn btn-fill btn-block" data-program="PRIME"><span data-i18n="p.btn3" data-text="Quero o acompanhamento Prime">Quero o acompanhamento Prime</span></a>
       </article>
     </div>
-    <p class="fineprint reveal">Todos os planos são personalizados. Os resultados dependem do teu esforço, da tua consistência e das tuas circunstâncias individuais.</p>
+    <p data-i18n="p.fine" class="fineprint reveal">Todos os planos são personalizados. Os resultados dependem do teu esforço, da tua consistência e das tuas circunstâncias individuais.</p>
   </div>
 </section>
 
@@ -260,20 +268,20 @@
 <section class="panel members light" id="members">
   <div class="container members-grid">
     <div>
-      <p class="label reveal">Zona VIP · Membros</p>
-      <h2 class="h2" data-split>O teu plano, os teus números, <em>o teu coach.</em></h2>
-      <p class="section-intro reveal" style="--d: .1s">Todos os clientes têm acesso à área de membros: os teus treinos, cada série que registas, o teu progresso por exercício e as notas do Juan.</p>
+      <p data-i18n="m.label" class="label reveal">Zona VIP · Membros</p>
+      <h2 data-i18n="m.h2" class="h2" data-split>O teu plano, os teus números, <em>o teu coach.</em></h2>
+      <p data-i18n="m.intro" class="section-intro reveal" style="--d: .1s">Todos os clientes têm acesso à área de membros: os teus treinos, cada série que registas, o teu progresso por exercício e as notas do Juan.</p>
       <div class="hero-actions reveal" style="--d: .2s">
-        <a href="https://thebetterself.vercel.app/app/index.html" class="btn btn-fill" data-magnetic><span data-text="Entrar">Entrar</span></a>
-        <a href="https://thebetterself.vercel.app/app/index.html" class="btn btn-line" data-magnetic><span data-text="Criar conta">Criar conta</span></a>
+        <a href="https://thebetterself.vercel.app/app/index.html" class="btn btn-fill" data-magnetic><span data-i18n="m.login" data-text="Entrar">Entrar</span></a>
+        <a href="https://thebetterself.vercel.app/app/index.html" class="btn btn-line" data-magnetic><span data-i18n="m.signup" data-text="Criar conta">Criar conta</span></a>
       </div>
-      <p class="fineprint reveal" style="--d: .3s">Entras com o teu email e uma password à tua escolha. O plano fica disponível assim que o Juan o ativar.</p>
+      <p data-i18n="m.fine" class="fineprint reveal" style="--d: .3s">Entras com o teu email e uma password à tua escolha. O plano fica disponível assim que o Juan o ativar.</p>
     </div>
     <ul class="members-list reveal" style="--d: .15s">
-      <li><strong>Treinos</strong><span>O teu plano, dia a dia, montado pelo Juan.</span></li>
-      <li><strong>Regista cada série</strong><span>Quilos e repetições por exercício, com os teus últimos números sempre à vista.</span></li>
-      <li><strong>Progresso</strong><span>Recordes, histórico e gráficos por exercício.</span></li>
-      <li><strong>Notas do coach</strong><span>Feedback e ajustes diretamente do Juan.</span></li>
+      <li data-i18n="m.f1"><strong>Treinos</strong><span>O teu plano, dia a dia, montado pelo Juan.</span></li>
+      <li data-i18n="m.f2"><strong>Regista cada série</strong><span>Quilos e repetições por exercício, com os teus últimos números sempre à vista.</span></li>
+      <li data-i18n="m.f3"><strong>Progresso</strong><span>Recordes, histórico e gráficos por exercício.</span></li>
+      <li data-i18n="m.f4"><strong>Notas do coach</strong><span>Feedback e ajustes diretamente do Juan.</span></li>
     </ul>
   </div>
 </section>
@@ -286,7 +294,7 @@
         <div class="parallax" data-parallax="0.07">
           <picture>
             <source type="image/webp" srcset="assets/img/juan-portrait-800.webp 800w, assets/img/juan-portrait-1200.webp 1200w, assets/img/juan-portrait-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 44vw" />
-            <img src="assets/img/juan-portrait.jpg" alt="Juan, fundador e coach da THEBETTERSELF" width="1200" height="1500" loading="lazy" decoding="async" />
+            <img data-i18n-alt="alt.juan" src="assets/img/juan-portrait.jpg" alt="Juan, fundador e coach da THEBETTERSELF" width="1200" height="1500" loading="lazy" decoding="async" />
           </picture>
         </div>
       </div>
@@ -294,21 +302,21 @@
         <div class="parallax" data-parallax="0.05">
           <picture>
             <source type="image/webp" srcset="assets/img/juan-football-600.webp 600w, assets/img/juan-football-900.webp 900w" sizes="(max-width: 900px) 55vw, 22vw" />
-            <img src="assets/img/juan-football.jpg" alt="Juan a jogar futebol no Benfica" width="900" height="1125" loading="lazy" decoding="async" />
+            <img data-i18n-alt="alt.benfica" src="assets/img/juan-football.jpg" alt="Juan a jogar futebol no Benfica" width="900" height="1125" loading="lazy" decoding="async" />
           </picture>
         </div>
         <span class="label">Benfica</span>
       </div>
     </div>
     <div class="about-copy">
-      <p class="label reveal">O teu coach</p>
-      <h2 class="h2" data-split>Conhece o <em>Juan.</em></h2>
-      <p class="about-lead reveal">Futebol de competição no Benfica. Oito anos de ginásio. Uma lição: o corpo constrói-se com treino, a melhor versão com consistência.</p>
-      <p class="about-text reveal" style="--d: .1s">Eu dou-te o método, a estrutura e o apoio. Tu trazes o compromisso.</p>
+      <p data-i18n="j.label" class="label reveal">O teu coach</p>
+      <h2 data-i18n="j.h2" class="h2" data-split>Conhece o <em>Juan.</em></h2>
+      <p data-i18n="j.lead" class="about-lead reveal">Futebol de competição no Benfica. Oito anos de ginásio. Uma lição: o corpo constrói-se com treino, a melhor versão com consistência.</p>
+      <p data-i18n="j.text" class="about-text reveal" style="--d: .1s">Eu dou-te o método, a estrutura e o apoio. Tu trazes o compromisso.</p>
       <ul class="info-strip reveal" style="--d: .2s">
-        <li><strong>8+ anos</strong><span>Ginásio</span></li>
-        <li><strong>Benfica</strong><span>Futebol</span></li>
-        <li><strong>1-para-1</strong><span>Acompanhamento</span></li>
+        <li data-i18n="j.i1"><strong>8+ anos</strong><span>Ginásio</span></li>
+        <li data-i18n="j.i2"><strong>Benfica</strong><span>Futebol</span></li>
+        <li data-i18n="j.i3"><strong>1-para-1</strong><span>Acompanhamento</span></li>
       </ul>
     </div>
   </div>
@@ -318,29 +326,29 @@
 <section class="window apply dark" id="apply" data-scene="floor">
   <div class="container apply-grid">
     <div class="apply-head">
-      <p class="label reveal">Começar</p>
-      <h2 class="display apply-title" data-split>A tua melhor versão começa com <em>uma decisão.</em></h2>
-      <p class="window-sub reveal">Basta uma mensagem. O Juan responde pessoalmente — sem formulários, sem esperas.</p>
+      <p data-i18n="a.label" class="label reveal">Começar</p>
+      <h2 data-i18n="a.h2" class="display apply-title" data-split>A tua melhor versão começa com <em>uma decisão.</em></h2>
+      <p data-i18n="a.sub" class="window-sub reveal">Basta uma mensagem. O Juan responde pessoalmente — sem formulários, sem esperas.</p>
     </div>
 
     <div class="wa-card reveal" style="--d: .1s">
       <ol class="wa-steps">
-        <li><span class="wa-step-n">01</span><p>Carrega no botão. Abre o WhatsApp no número do Juan.</p></li>
-        <li><span class="wa-step-n">02</span><p>Envia <b>START</b>.</p></li>
-        <li><span class="wa-step-n">03</span><p>Ele faz-te algumas perguntas e diz-te o passo seguinte.</p></li>
+        <li><span class="wa-step-n">01</span><p data-i18n="a.s1">Carrega no botão. Abre o WhatsApp no número do Juan.</p></li>
+        <li><span class="wa-step-n">02</span><p data-i18n="a.s2">Envia <b>START</b>.</p></li>
+        <li><span class="wa-step-n">03</span><p data-i18n="a.s3">Ele faz-te algumas perguntas e diz-te o passo seguinte.</p></li>
       </ol>
       <a class="btn btn-fill btn-lg btn-block wa-btn" id="waCta" data-wa href="https://wa.me/message/YCJGWLGCUBCZD1" target="_blank" rel="noopener noreferrer" data-magnetic>
         <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.82c2.16 0 4.19.84 5.72 2.37a8.03 8.03 0 0 1 2.37 5.72c0 4.46-3.63 8.09-8.1 8.09a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.05 8.05 0 0 1-1.24-4.32c0-4.46 3.63-8.1 8.21-8.1zm-2.3 4.1c-.17 0-.45.06-.69.31-.24.25-.9.88-.9 2.14s.92 2.48 1.05 2.65c.13.17 1.8 2.75 4.37 3.86.61.26 1.08.42 1.45.54.61.19 1.17.17 1.61.1.49-.07 1.5-.61 1.72-1.21.21-.6.21-1.11.15-1.21-.06-.11-.24-.17-.49-.3-.25-.12-1.5-.74-1.73-.82-.23-.09-.4-.13-.57.12-.17.25-.65.82-.8.99-.15.17-.29.19-.54.06-.25-.12-1.07-.39-2.04-1.26-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.38.11-.51.11-.11.25-.29.37-.44.12-.15.16-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.55-1.37-.77-1.87-.2-.48-.41-.42-.56-.43-.14-.01-.31-.01-.48-.01z"/></svg>
-        <span data-text="Começar no WhatsApp">Começar no WhatsApp</span>
+        <span data-i18n="a.btn" data-text="Começar no WhatsApp">Começar no WhatsApp</span>
       </a>
-      <p class="form-note">Sem compromisso até falares com o Juan.</p>
+      <p data-i18n="a.note" class="form-note">Sem compromisso até falares com o Juan.</p>
     </div>
   </div>
 </section>
 
 </main>
 
-<a href="#apply" class="sticky-cta" id="stickyCta" aria-label="Quero começar"><span>Quero começar</span><b id="stickyCtaNote"></b></a>
+<a href="#apply" class="sticky-cta" id="stickyCta" data-i18n-aria="cta.apply"><span data-i18n="cta.apply3">Quero começar</span><b id="stickyCtaNote"></b></a>
 
 <footer class="footer light">
   <div class="container footer-inner">
@@ -349,14 +357,15 @@
       <!-- EDITABLE: replace with the real Instagram URL and contact email -->
       <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
       <a href="mailto:hello@thebetterself.com">hello@thebetterself.com</a>
-      <a href="https://thebetterself.vercel.app/app/index.html">Área de membros</a>
-      <a href="privacy.html">Privacidade</a>
-      <a href="terms.html">Termos</a>
+      <a data-i18n="f.members" href="https://thebetterself.vercel.app/app/index.html">Área de membros</a>
+      <a data-i18n="f.privacy" href="privacy.html">Privacidade</a>
+      <a data-i18n="f.terms" href="terms.html">Termos</a>
     </nav>
     <p class="footer-copy">© <span id="year"></span> THEBETTERSELF</p>
   </div>
 </footer>
 
-<script src="js/main.js?v=22" defer></script>
+<script src="js/i18n.js?v=2" defer></script>
+<script src="js/main.js?v=23" defer></script>
 </body>
 </html>
