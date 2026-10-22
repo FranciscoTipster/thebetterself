@@ -119,5 +119,6 @@ window.TBS_EN = {
   "p.dec": ".90",
   "p.was1": "€79.90",
   "p.was2": "€129.90",
-  "p.was3": "€249.90"
+  "p.was3": "€249.90",
+  "cta.applyMM": "Apply for coaching"
 };
