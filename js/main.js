@@ -10,8 +10,10 @@
   const CONFIG = {
     // Founding 15. Update `taken` MANUALLY as real spots are filled. Never automatic.
     foundingSpots: { total: 15, taken: 0 },
-    // Application form endpoint. Empty = show confirmation only, send nothing.
-    formEndpoint: ''
+    // WhatsApp contact. `link` is the short link (its pre-filled message is set inside
+    // WhatsApp Business). Fill in `phone` (digits only, with country code) to build the
+    // link here instead — then `text` below is pre-filled automatically, plan included.
+    whatsapp: { link: 'https://wa.me/message/YCJGWLGCUBCZD1', phone: '', text: 'START' }
   };
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -357,59 +359,21 @@
   })();
 
   /* ----------------------------------------------------------------------
-     Pricing CTA → preselect program
+     WhatsApp CTA — remembers which plan was clicked
      ---------------------------------------------------------------------- */
+  const wa = CONFIG.whatsapp || {};
+  let chosenProgram = '';
+  const waHref = () => {
+    if (!wa.phone) return wa.link;                       // short link: message set in WhatsApp Business
+    const msg = chosenProgram ? `${wa.text} ${chosenProgram}` : wa.text;
+    return `https://wa.me/${String(wa.phone).replace(/\D/g, '')}?text=${encodeURIComponent(msg)}`;
+  };
+  const refreshWaLinks = () => $$('[data-wa]').forEach(a => { a.href = waHref(); });
+  refreshWaLinks();
   $$('[data-program]').forEach(link => link.addEventListener('click', () => {
-    const input = $(`#programChoice input[value="${link.dataset.program}"]`);
-    if (input) input.checked = true;
+    chosenProgram = link.dataset.program === 'NOT SURE' ? '' : link.dataset.program;
+    refreshWaLinks();
   }));
-
-  /* ----------------------------------------------------------------------
-     Application form
-     ---------------------------------------------------------------------- */
-  const form = $('#applyForm'), success = $('#formSuccess'), errorMsg = $('#formError'), submitBtn = $('#submitBtn');
-  function validate() {
-    let ok = true;
-    $$('.field', form).forEach(f => f.classList.remove('is-invalid'));
-    $$('input[type="text"], input[type="email"], textarea', form).forEach(el => {
-      if (!el.checkValidity()) { ok = false; el.closest('.field').classList.add('is-invalid'); }
-    });
-    if (!$('input[name="program"]:checked', form)) { ok = false; $('#programChoice').closest('.field').classList.add('is-invalid'); }
-    const consent = $('input[name="consent"]', form);
-    if (!consent.checked) { ok = false; consent.closest('.field').classList.add('is-invalid'); }
-    return ok;
-  }
-  $$('input, textarea', form).forEach(el => {
-    ['input', 'change'].forEach(ev => el.addEventListener(ev, () => el.closest('.field').classList.remove('is-invalid')));
-  });
-  function showSuccess() {
-    form.hidden = true; success.hidden = false;
-    window.scrollTo({ top: success.getBoundingClientRect().top + window.scrollY - 140, behavior: reduced ? 'auto' : 'smooth' });
-  }
-  form.addEventListener('submit', async e => {
-    e.preventDefault();
-    errorMsg.hidden = true;
-    if (!validate()) {
-      errorMsg.hidden = false;
-      const first = $('.is-invalid', form);
-      if (first) first.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
-      return;
-    }
-    const data = Object.fromEntries(new FormData(form).entries());
-    data.submittedAt = new Date().toISOString();
-    if (!CONFIG.formEndpoint) { console.info('[TBS] Application (no endpoint configured):', data); showSuccess(); return; }
-    submitBtn.disabled = true;
-    try {
-      const res = await fetch(CONFIG.formEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(data) });
-      if (!res.ok) throw new Error(`Request failed: ${res.status}`);
-      showSuccess();
-    } catch (err) {
-      console.error('[TBS] Application submit failed', err);
-      errorMsg.textContent = 'Something went wrong while sending your application. Please try again or email us directly.';
-      errorMsg.hidden = false;
-      submitBtn.disabled = false;
-    }
-  });
 
   /* ----------------------------------------------------------------------
      Sticky mobile CTA

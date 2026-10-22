@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet" />
   <link rel="preload" as="image" href="assets/img/juan-hero.jpg" imagesrcset="assets/img/juan-hero-800.webp 800w, assets/img/juan-hero-1200.webp 1200w, assets/img/juan-hero-1600.webp 1600w" imagesizes="(max-width: 900px) 100vw, 46vw" />
-  <link rel="stylesheet" href="css/styles.css?v=23" />
+  <link rel="stylesheet" href="css/styles.css?v=24" />
 
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"Organization","name":"THEBETTERSELF","alternateName":"TBS","url":"https://thebetterself.com/","logo":"https://thebetterself.com/assets/brand/tbs-monogram-512.png","description":"Personalized online fitness coaching designed to help you build a stronger body, better habits and a more disciplined lifestyle.","founder":{"@type":"Person","name":"Juan"}}
@@ -318,45 +318,22 @@
 <section class="window apply dark" id="apply" data-scene="floor">
   <div class="container apply-grid">
     <div class="apply-head">
-      <p class="label reveal">Application</p>
+      <p class="label reveal">Apply</p>
       <h2 class="display apply-title" data-split>Your better self starts with <em>a decision.</em></h2>
-      <p class="window-sub reveal">Tell us where you are and where you want to go. Juan reads every application.</p>
+      <p class="window-sub reveal">One message is all it takes. Juan answers personally — no forms, no waiting.</p>
     </div>
 
-    <!-- To connect a backend, set CONFIG.formEndpoint in js/main.js. Until then the form shows the confirmation without sending data. -->
-    <form class="form reveal" id="applyForm" novalidate style="--d: .1s">
-      <div class="form-row">
-        <div class="field"><label for="fullName">Full name</label><input id="fullName" name="fullName" type="text" autocomplete="name" required /></div>
-        <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required /></div>
-      </div>
-      <fieldset class="field choice">
-        <legend>Program</legend>
-        <div class="choice-grid" id="programChoice">
-          <label class="choice-item"><input type="radio" name="program" value="START" required /><span>Start</span></label>
-          <label class="choice-item"><input type="radio" name="program" value="EVOLVE" /><span>Evolve</span></label>
-          <label class="choice-item"><input type="radio" name="program" value="PRIME" /><span>Prime</span></label>
-          <label class="choice-item"><input type="radio" name="program" value="NOT SURE" /><span>Not sure</span></label>
-        </div>
-      </fieldset>
-      <div class="field"><label for="goal">What do you want to change?</label><textarea id="goal" name="goal" rows="3" required></textarea></div>
-      <div class="field check">
-        <label class="check-item">
-          <input type="checkbox" name="consent" value="yes" required />
-          <span class="check-box" aria-hidden="true"></span>
-          <span>I understand that results require consistency, effort and adherence to the coaching process.</span>
-        </label>
-      </div>
-      <p class="form-error" id="formError" role="alert" hidden>Please complete all fields before submitting.</p>
-      <div class="form-actions">
-        <button type="submit" class="btn btn-fill btn-lg btn-block" id="submitBtn" data-magnetic><span data-text="Submit my application">Submit my application</span></button>
-        <p class="form-note">No commitment until we have spoken.</p>
-      </div>
-    </form>
-
-    <div class="form-success" id="formSuccess" hidden aria-live="polite">
-      <p class="label">Application</p>
-      <h3 class="h2">Application <em>received.</em></h3>
-      <p>Thank you for applying to THEBETTERSELF. We will review your application and contact you with the next steps.</p>
+    <div class="wa-card reveal" style="--d: .1s">
+      <ol class="wa-steps">
+        <li><span class="wa-step-n">01</span><p>Tap the button. WhatsApp opens on Juan&rsquo;s number.</p></li>
+        <li><span class="wa-step-n">02</span><p>Send <b>START</b>.</p></li>
+        <li><span class="wa-step-n">03</span><p>He asks a few questions and tells you the next step.</p></li>
+      </ol>
+      <a class="btn btn-fill btn-lg btn-block wa-btn" id="waCta" data-wa href="https://wa.me/message/YCJGWLGCUBCZD1" target="_blank" rel="noopener noreferrer" data-magnetic>
+        <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.82c2.16 0 4.19.84 5.72 2.37a8.03 8.03 0 0 1 2.37 5.72c0 4.46-3.63 8.09-8.1 8.09a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.05 8.05 0 0 1-1.24-4.32c0-4.46 3.63-8.1 8.21-8.1zm-2.3 4.1c-.17 0-.45.06-.69.31-.24.25-.9.88-.9 2.14s.92 2.48 1.05 2.65c.13.17 1.8 2.75 4.37 3.86.61.26 1.08.42 1.45.54.61.19 1.17.17 1.61.1.49-.07 1.5-.61 1.72-1.21.21-.6.21-1.11.15-1.21-.06-.11-.24-.17-.49-.3-.25-.12-1.5-.74-1.73-.82-.23-.09-.4-.13-.57.12-.17.25-.65.82-.8.99-.15.17-.29.19-.54.06-.25-.12-1.07-.39-2.04-1.26-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.38.11-.51.11-.11.25-.29.37-.44.12-.15.16-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.55-1.37-.77-1.87-.2-.48-.41-.42-.56-.43-.14-.01-.31-.01-.48-.01z"/></svg>
+        <span data-text="Start on WhatsApp">Start on WhatsApp</span>
+      </a>
+      <p class="form-note">No commitment until you have spoken with Juan.</p>
     </div>
   </div>
 </section>
@@ -380,6 +357,6 @@
   </div>
 </footer>
 
-<script src="js/main.js?v=20" defer></script>
+<script src="js/main.js?v=21" defer></script>
 </body>
 </html>
