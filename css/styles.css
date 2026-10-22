@@ -199,7 +199,7 @@ h3 { font-family: var(--font-head); font-size: clamp(1.25rem, 1.8vw, 1.6rem); le
 .cal-num { font-family: var(--font-head); font-weight: 600; font-size: clamp(3.4rem, 5.6vw, 5.6rem); letter-spacing: -.06em; line-height: 1; display: grid; place-items: center; font-variant-numeric: tabular-nums; padding-bottom: 8px; }
 .cal.is-done .cal-card { animation: calPop .6s var(--ease); }
 @keyframes calPop { 0% { transform: scale(1); } 40% { transform: scale(1.06); } 100% { transform: scale(1); } }
-.cal-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; max-width: 320px; }
+.cal-grid { display: grid; grid-template-columns: repeat(15, 10px); gap: 5px; }
 .cal-grid i { display: block; aspect-ratio: 1; border: 1px solid var(--rule-strong); transform: scale(.6); opacity: .35; transition: transform .35s var(--ease), opacity .35s, background-color .35s; }
 .cal-grid i.is-on { background: var(--fg); border-color: var(--fg); transform: none; opacity: 1; }
 .cal-leaves { position: absolute; inset: 0; pointer-events: none; }

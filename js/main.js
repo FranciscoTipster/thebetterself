@@ -275,20 +275,20 @@
   });
 
   /* ----------------------------------------------------------------------
-     Calendar: pages fly off 1 → 30 while the month grid fills
+     Calendar: pages fly off 1 → 60 while the grid fills
      ---------------------------------------------------------------------- */
   (function () {
     const cal = $('#cal'); if (!cal) return;
     const num = $('#calNum'), grid = $('#calGrid'), leaves = $('#calLeaves');
     const cells = [];
-    for (let i = 0; i < 30; i++) { const c = document.createElement('i'); grid.appendChild(c); cells.push(c); }
+    for (let i = 0; i < 60; i++) { const c = document.createElement('i'); grid.appendChild(c); cells.push(c); }
     let started = false;
     const run = () => {
       if (started) return; started = true;
-      if (reduced) { num.textContent = '30'; cells.forEach(c => c.classList.add('is-on')); cal.classList.add('is-done'); return; }
+      if (reduced) { num.textContent = '60'; cells.forEach(c => c.classList.add('is-on')); cal.classList.add('is-done'); return; }
       let day = 1;
       const step = () => {
-        if (day >= 30) { cal.classList.add('is-done'); return; }
+        if (day >= 60) { cells[cells.length - 1].classList.add('is-on'); cal.classList.add('is-done'); return; }
         // the current page flies away
         const leaf = document.createElement('span');
         leaf.className = 'cal-leaf'; leaf.textContent = String(day).padStart(2, '0');
@@ -301,7 +301,7 @@
         cells[day - 1].classList.add('is-on');
         day++;
         num.textContent = String(day);
-        const delay = 40 + (day / 30) * 70; // eases out as it approaches 30
+        const delay = 25 + (day / 60) * 55; // eases out as it approaches 60
         setTimeout(step, delay);
       };
       cells[0].classList.add('is-on');
