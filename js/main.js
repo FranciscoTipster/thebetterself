@@ -320,18 +320,24 @@
   /* ----------------------------------------------------------------------
      Calendar: pages fly off 1 → 60 while the grid fills
      ---------------------------------------------------------------------- */
-  (function () {
-    const cal = $('#cal'); if (!cal) return;
+  const calendar = (function () {
+    const cal = $('#cal'); if (!cal) return { run() {}, set() {} };
     const num = $('#calNum'), grid = $('#calGrid'), leaves = $('#calLeaves');
-    const cells = [];
-    for (let i = 0; i < 60; i++) { const c = document.createElement('i'); grid.appendChild(c); cells.push(c); }
+    let cells = [], total = 60, timer = null;
+    const build = n => {
+      total = n; grid.innerHTML = ''; cells = [];
+      for (let i = 0; i < n; i++) { const c = document.createElement('i'); grid.appendChild(c); cells.push(c); }
+      grid.style.gridTemplateColumns = `repeat(${n > 30 ? 15 : 10}, 10px)`;
+    };
+    build(60);
     let started = false;
     const run = () => {
       if (started) return; started = true;
-      if (reduced) { num.textContent = '60'; cells.forEach(c => c.classList.add('is-on')); cal.classList.add('is-done'); return; }
+      clearTimeout(timer);
+      if (reduced) { num.textContent = String(total); cells.forEach(c => c.classList.add('is-on')); cal.classList.add('is-done'); return; }
       let day = 1;
       const step = () => {
-        if (day >= 60) { cells[cells.length - 1].classList.add('is-on'); cal.classList.add('is-done'); return; }
+        if (day >= total) { cells[cells.length - 1].classList.add('is-on'); cal.classList.add('is-done'); return; }
         // the current page flies away
         const leaf = document.createElement('span');
         leaf.className = 'cal-leaf'; leaf.textContent = String(day).padStart(2, '0');
@@ -344,17 +350,43 @@
         cells[day - 1].classList.add('is-on');
         day++;
         num.textContent = String(day);
-        const delay = 25 + (day / 60) * 55; // eases out as it approaches 60
-        setTimeout(step, delay);
+        const delay = 25 + (day / total) * 55; // eases out as it approaches the end
+        timer = setTimeout(step, delay);
       };
       cells[0].classList.add('is-on');
-      setTimeout(step, 350);
+      timer = setTimeout(step, 350);
+    };
+    const set = n => {
+      if (n === total && started) return;
+      clearTimeout(timer); started = false;
+      cal.classList.remove('is-done');
+      build(n);
+      const r = cal.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) run();
     };
     const check = () => {
       const r = cal.getBoundingClientRect();
       if (r.top < window.innerHeight * 0.8 && r.bottom > 0) { run(); window.removeEventListener('scroll', check); }
     };
     window.addEventListener('scroll', check, { passive: true }); check();
+    return { run, set };
+  })();
+
+  /* ----------------------------------------------------------------------
+     Transformation stories: tabs swap the media and retune the calendar
+     ---------------------------------------------------------------------- */
+  (function () {
+    const tabs = $$('[data-story-tab]'); if (!tabs.length) return;
+    tabs.forEach(tab => tab.addEventListener('click', () => {
+      const id = tab.dataset.storyTab;
+      tabs.forEach(t => t.setAttribute('aria-selected', String(t === tab)));
+      $$('[data-story]').forEach(st => {
+        const on = st.dataset.story === id;
+        st.hidden = !on;
+        if (on) st.classList.add('is-in');
+      });
+      calendar.set(Number(tab.dataset.days) || 60);
+    }));
   })();
 
   /* ----------------------------------------------------------------------

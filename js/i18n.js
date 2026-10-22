@@ -26,7 +26,7 @@ window.TBS_EN = {
   "aria.cal": "60 days",
   "r.day": "Day",
   "r.h2": "Hundreds of small decisions, <em>repeated.</em>",
-  "r.fine": "Real photographs, 60 days apart. Results depend on effort, consistency and individual circumstances.",
+  "r.fine": "Real client photographs. Results depend on effort, consistency and individual circumstances.",
   "r.btn": "See the programs",
   "alt.after": "After 60 days of coaching",
   "alt.before": "Before coaching",
@@ -120,5 +120,11 @@ window.TBS_EN = {
   "p.was1": "€79.90",
   "p.was2": "€129.90",
   "p.was3": "€249.90",
-  "cta.applyMM": "Apply for coaching"
+  "cta.applyMM": "Apply for coaching",
+  "st.t1": "60 days",
+  "st.t2": "Marcela, 55 · 30 days",
+  "alt.m-before": "Marcela before coaching",
+  "alt.m-after": "Marcela after 30 days of coaching",
+  "r.cap2": "30-day transformation",
+  "q.marcela": "“I never thought I could feel this strong and confident at 55. This journey didn’t just change my body, it changed my life.”"
 };

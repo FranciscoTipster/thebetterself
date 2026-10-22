@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet" />
   <link rel="preload" as="image" href="assets/img/juan-hero.jpg" imagesrcset="assets/img/juan-hero-800.webp 800w, assets/img/juan-hero-1200.webp 1200w, assets/img/juan-hero-1600.webp 1600w" imagesizes="(max-width: 900px) 100vw, 46vw" />
-  <link rel="stylesheet" href="css/styles.css?v=25" />
+  <link rel="stylesheet" href="css/styles.css?v=26" />
 
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"Organization","name":"THEBETTERSELF","alternateName":"TBS","url":"https://thebetterself.com/","logo":"https://thebetterself.com/assets/brand/tbs-monogram-512.png","description":"Personalized online fitness coaching designed to help you build a stronger body, better habits and a more disciplined lifestyle.","founder":{"@type":"Person","name":"Juan"}}
@@ -143,10 +143,15 @@
         <div class="cal-leaves" id="calLeaves" aria-hidden="true"></div>
       </div>
       <h2 data-i18n="r.h2" class="h2" data-split>Centenas de pequenas decisões, <em>repetidas.</em></h2>
-      <p data-i18n="r.fine" class="fineprint reveal">Fotografias reais, com 60 dias de intervalo. Os resultados dependem do esforço, da consistência e das circunstâncias de cada pessoa.</p>
+      <p data-i18n="r.fine" class="fineprint reveal">Fotografias reais de clientes. Os resultados dependem do esforço, da consistência e das circunstâncias de cada pessoa.</p>
       <a href="#coaching" class="btn btn-fill reveal" data-magnetic><span data-i18n="r.btn" data-text="Ver os planos">Ver os planos</span></a>
     </div>
-    <figure class="ba reveal" style="--d: .15s">
+    <div class="results-media">
+      <div class="story-tabs" role="tablist" aria-label="Transformações">
+        <button type="button" role="tab" data-story-tab="s1" data-days="60" aria-selected="true"><span data-i18n="st.t1">60 dias</span></button>
+        <button type="button" role="tab" data-story-tab="s2" data-days="30" aria-selected="false"><span data-i18n="st.t2">Marcela, 55 · 30 dias</span></button>
+      </div>
+    <figure class="ba reveal story" data-story="s1" style="--d: .15s">
       <div class="ba-frame" data-ba style="--pos: 50%">
         <picture class="ba-after">
           <source type="image/webp" srcset="assets/img/transformations/tf-02-after.webp" />
@@ -163,6 +168,31 @@
       </div>
       <figcaption class="ba-caption"><span data-i18n="r.drag" class="label">Arrasta para comparar</span><span data-i18n="r.cap" class="label">Transformação de 60 dias</span></figcaption>
     </figure>
+
+    <figure class="ba story" data-story="s2" hidden>
+      <div class="pair">
+        <div class="pair-item">
+          <picture>
+            <source type="image/webp" srcset="assets/img/transformations/tf-03-before.webp" />
+            <img data-i18n-alt="alt.m-before" src="assets/img/transformations/tf-03-before.jpg" alt="Marcela antes do acompanhamento" width="800" height="1000" loading="lazy" decoding="async" />
+          </picture>
+          <span data-i18n="r.before" class="ba-tag ba-tag-before">Antes</span>
+        </div>
+        <div class="pair-item">
+          <picture>
+            <source type="image/webp" srcset="assets/img/transformations/tf-03-after.webp" />
+            <img data-i18n-alt="alt.m-after" src="assets/img/transformations/tf-03-after.jpg" alt="Marcela depois de 30 dias de acompanhamento" width="800" height="1000" loading="lazy" decoding="async" />
+          </picture>
+          <span data-i18n="r.after" class="ba-tag ba-tag-after">Depois</span>
+        </div>
+      </div>
+      <figcaption class="ba-caption"><span class="label">Marcela, 55</span><span data-i18n="r.cap2" class="label">Transformação de 30 dias</span></figcaption>
+      <blockquote class="quote">
+        <p data-i18n="q.marcela">“Nunca pensei que me pudesse sentir tão forte e confiante aos 55. Esta caminhada não mudou só o meu corpo, mudou a minha vida.”</p>
+        <cite>Marcela, 55</cite>
+      </blockquote>
+    </figure>
+    </div>
   </div>
 </section>
 
@@ -365,7 +395,7 @@
   </div>
 </footer>
 
-<script src="js/i18n.js?v=3" defer></script>
-<script src="js/main.js?v=23" defer></script>
+<script src="js/i18n.js?v=4" defer></script>
+<script src="js/main.js?v=24" defer></script>
 </body>
 </html>
