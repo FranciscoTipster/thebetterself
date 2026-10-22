@@ -156,7 +156,7 @@
   const mobileMenu = $('#mobileMenu');
   function setMenu(open) {
     burger.setAttribute('aria-expanded', String(open));
-    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    burger.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
     mobileMenu.classList.toggle('is-open', open);
     mobileMenu.setAttribute('aria-hidden', String(!open));
     document.body.classList.toggle('menu-open', open);
@@ -382,7 +382,7 @@
   const sticky = $('#stickyCta');
   const applySection = $('#apply');
   if (sticky) {
-    $('#stickyCtaNote').textContent = spotsLeft > 0 ? `${spotsLeft} founding spots` : '';
+    $('#stickyCtaNote').textContent = spotsLeft > 0 ? `${spotsLeft} vagas de fundador` : '';
     const update = () => {
       const r = applySection.getBoundingClientRect();
       const formVisible = r.top < window.innerHeight * 0.6 && r.bottom > 0;
